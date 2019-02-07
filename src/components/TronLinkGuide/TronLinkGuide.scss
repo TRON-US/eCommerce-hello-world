@@ -1,0 +1,39 @@
+.tronLink {
+    margin: 0 10px;
+    background: #ffffff;
+    border-radius: 4px;
+    box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.08);
+    padding: 40px;
+    margin-bottom: 30px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    h1 {
+        margin: 0;
+        margin-bottom: 10px;
+    }
+
+    p {
+        padding: 0;
+        margin: 0;
+    }
+
+    .info {
+        flex: 1;
+    }
+
+    .logo {
+        margin-left: 30px;
+    }
+}
+
+.tronLink.hover {
+    transition: all 200ms ease;
+    cursor: pointer;
+}
+
+.tronLink:hover {
+    transform: translateY(-2px);
+    box-shadow: 0px 4px 9px 0px rgba(0, 0, 0, 0.12);
+}
