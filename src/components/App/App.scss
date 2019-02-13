@@ -1,4 +1,23 @@
 .header-container {
   display: flex;
   justify-content: space-between;
+  border-bottom: 2px solid #d3d3d3;
+  margin: 0px 30px 30px 30px;
+  padding-bottom: 2px;
+}
+.nav-link {
+  text-decoration: none;
+  color: #b83d31;
+  &:hover {
+    color: #ec3323;
+  }
+  &:active {
+    color: #000000;
+  }
+}
+
+.app-title {
+  font-family: "Pacifico";
+  font-size: 2em;
+  text-shadow: 4px 4px 4px #aaa;
 }
