@@ -10,8 +10,8 @@ export default class ECommerce extends Component {
 
   render() {
     return (
-      <div>
-        <p>This is the ECommerce Component </p>
+      <div className="eCommerce-component-container">
+        <p>This will be the ECommerce Component </p>
       </div>
     );
   }
