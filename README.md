@@ -53,7 +53,7 @@
 ### Set up the Project
 
 1. Download or Clone the skeleton for this guide from [here](https://github.com/UjwalBattar/eCommerce-hello-world).
-2. From your terminal, cd into this newly created directory.
+2. From your terminal, `cd` into this newly created directory.
 3. In terminal, run `npm install`.
 4. Open up this project in your favorite IDE/text-editor.
 
