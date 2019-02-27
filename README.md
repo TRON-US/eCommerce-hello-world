@@ -150,7 +150,7 @@ Now that you have acquainted yourself with the tools, let us get started writing
 
 1. First, navigate to [Remix](https://remix.ethereum.org/).
 2. The landing page for Remix will look like this:
-   ![Remix Landing Page](/images/remix-landing.png)
+   ![Remix Landing Page](./public/images/remix-landing.png)
 
 ---
 
