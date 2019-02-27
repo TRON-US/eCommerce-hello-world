@@ -1,5 +1,7 @@
 # eCommerce-hello-world
 
+## Part I
+
 #### Pre-requisites:
 
 - Make sure you have Google Chrome Installed. If it is not installed, you can install it form here: [install Chrome](https://support.google.com/chrome/answer/95346?co=GENIE.Platform%3DDesktop&hl=en-GB).
@@ -120,4 +122,36 @@ this.setState({
    - Now uncomment the function call on line 21 in the `componentDidMount` function.
    - In the browser, you should now see the bandwidth balance of your account.
 
-## Congratulations! You have completed the first part of this guide! In the next part, we will write out smart contract before moving on to connecting our front-end to our smart-contract on the blockchain!
+### Congratulations! You have completed the first part of this guide! In the next part, we will write out smart contract before moving on to connecting our front-end to our smart-contract on the blockchain!
+
+---
+
+## Part II
+
+#### Overview
+
+- In this part, we will explore the tools we use to build a smart contract.
+- Smart contracts are essentially an efficient way to execute transparent and conflict-free transactions online without requiring services of third parties and middlemen.
+- We will use a contract-oriented, high-level language for implementing smart contracts called Solidity. You can check out more in-depth information about Solidity in their documentation [here](https://solidity.readthedocs.io/en/v0.4.24/).
+- We will also use [Remix](https://remix.ethereum.org/), a powerful, open source tool that helps you write Solidity contracts straight from the browser. Written in JavaScript, Remix supports both usage in the browser and locally. Check out the documentation [here](https://remix.readthedocs.io/en/latest/).
+
+Resources:
+
+- [Remix](https://remix.ethereum.org/)
+- [Remix Documentation](https://remix.readthedocs.io/en/latest/)
+- [Remix Wikipedia](https://en.wikipedia.org/wiki/Remix)
+- [Solidity Documentation](https://solidity.readthedocs.io/en/latest/#)
+- [Solidity Wikipedia](https://en.wikipedia.org/wiki/Solidity)
+- [BlockGeeks Smart Contract article](https://blockgeeks.com/guides/smart-contracts/)
+
+Now that you have acquainted yourself with the tools, let us get started writing our first Smart Contract!
+
+### Remix
+
+1. First, navigate to [Remix](https://remix.ethereum.org/).
+2. The landing page for Remix will look like this:
+   ![Remix Landing Page](/images/remix-landing.png)
+
+---
+
+## Part III
