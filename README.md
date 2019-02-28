@@ -156,31 +156,139 @@ Now that you have acquainted yourself with the tools, let us get started writing
 - It comes pre-loaded with an example Ballot Contract. Feel free to look around and try to understand what is going on. Walkthrough: [Solidity by Example](https://solidity.readthedocs.io/en/v0.4.24/solidity-by-example.html).
 - We will briefly go through some major parts of Remix complete tour can be found [here](https://remix.readthedocs.io/en/latest/solidity_editor.html).
 
-  - The _file explorer_ section on the left will display all the files you have created in Remix. In the "browser" directory is where you will find the contracts you have created. ![File Explorer](./public/images/remix-file-explorer.png) - The section in the middle is the _Editor_ or _RemixIDE_ where your contract files are compiled. This will also show open files and syntax highlighting mapped to Solidity keywords. ![Remix Editor](./public/images/remix-editor.png)
-  - Below the editor is the _Terminal_ which is helpful to view logs of transactions, interact with the RemixIDE and begin debugging. ![Remix Terminal](./public/images/remix-terminal.png).
+  - The **file explorer** section on the left will display all the files you have created in Remix. In the "browser" directory is where you will find the contracts you have created. ![File Explorer](./public/images/remix-file-explorer.png) - The section in the middle is the **Editor** or **RemixIDE** where your contract files are compiled. This will also show open files and syntax highlighting mapped to Solidity keywords. ![Remix Editor](./public/images/remix-editor.png)
+  - Below the editor is the **Terminal** which is helpful to view logs of transactions, interact with the RemixIDE and begin debugging. ![Remix Terminal](./public/images/remix-terminal.png).
   - To the right, we will be focusing on 3 tabs - Compile, Run, and Testing but I urge you to learn more about all of them.
-    - The _Compile_ tab is where we will select the compiler version we want Remix to use and also enable some settings to make the process easier on ourselves.![Compile Tab](./public/images/remix-compile-initial.png)
-    - the _Run_ tab is where we will deploy and interact with our contract. We can also configure which environment we want Remix to connect to. We will stick with _JavaScript VM_ for now as the other two environments will require external tools. Web3 provider requires an Ethereum Node and Injected provider requires MetaMask or Mint. _MetaMask_ is similar to our _TronLink_ and injects _TronWeb_ which is comparable to _Web3_. ![Run Tab](./public/images/remix-run-initial.png)
-    - The _Debugger_ tab is were we can walkthrough and debug our smart contract if we face some issues. (_More on this later_) ![Debugging Tab](./public/images/remix-debugger-initial.png)
+    - The **Compile** tab is where we will select the compiler version we want Remix to use and also enable some settings to make the process easier on ourselves.![Compile Tab](./public/images/remix-compile-initial.png)
+    - the **Run** tab is where we will deploy and interact with our contract. We can also configure which environment we want Remix to connect to. We will stick with **JavaScript VM** for now as the other two environments will require external tools. Web3 provider requires an Ethereum Node and Injected provider requires MetaMask or Mint. **MetaMask** is similar to our **TronLink** and injects **TronWeb** which is comparable to **Web3**. ![Run Tab](./public/images/remix-run-initial.png)
+    - The **Debugger** tab is were we can walkthrough and debug our smart contract if we face some issues. (_More on this later_) ![Debugging Tab](./public/images/remix-debugger-initial.png)
 
 #### Setup
 
 1. Let us begin by creating a new contract file. (N.B. All Solidity files have a .sol extension)
-   - In the top right, near the _file explorer_ section, click on the circle with a plus to create a new file.
+   - In the top right, near the **file explorer** section, click on the circle with a plus to create a new file.
    - You should see a pop up to alter the name of the default "Untitled.sol". You may call your file anything but note that it is a general rule of thumb to name it after the contract defined in it. Let us call this file "ECommerce.sol" as our contract will be called "ECommerce".
-   - On successfully submitting the name, you should see your new, blank file (browser/ECommerce.sol) displayed in the _Editor_.
+   - On successfully submitting the name, you should see your new, blank file (browser/ECommerce.sol) displayed in the **Editor**.
 2. Compile tab:
-   - In the dropdown that should currently be displaying _Select new compiler version_, scroll down the long list and select "0.4.25+commit.59dbf8f1". Currently, the max compiler version compatible with TRON is 0.4.25.
+   - In the dropdown that should currently be displaying **Select new compiler version**, scroll down the long list and select "0.4.25+commit.59dbf8f1". Currently, the max compiler version compatible with TRON is 0.4.25.
    - Above the dropdown, it should display "Current version:0.4.25+commit.59dbf8f1.Emscripten.clang"
    - Below the dropdown, we will also check the "Auto compile" box. This will recompile our Smart Contract on changes.
 3. Run tab:
    - The Environment should be JavaScript VM
    - Account will have 5 test accounts with 100 Ether for testing within Remix. Note that the hash next to the "(100 Ether)" is the public address of that account, similar to your public address from TronLink. Right next to it is an option to copy the address of the currently selected account (_for future reference_).
-   - The Gas limit will be defaulted to 3000000. We will leave this as is for now but you can learn more [here](https://masterthecrypto.com/ethereum-what-is-gas-gas-limit-gas-price/). This is similar to _Energy_ and _Bandwidth_ on _TRON_.
-   - Value should be 0 and the denomination set to "Wei". you can learn more about Ethereum denominations [here](http://ethdocs.org/en/latest/ether.html). The denominations used on _TRON_ are _TRX_ or _SUN_.
+   - The Gas limit will be defaulted to 3000000. We will leave this as is for now but you can learn more [here](https://masterthecrypto.com/ethereum-what-is-gas-gas-limit-gas-price/). This is similar to **Energy** and **Bandwidth** on **TRON**.
+   - Value should be 0 and the denomination set to "Wei". you can learn more about Ethereum denominations [here](http://ethdocs.org/en/latest/ether.html). The denominations used on **TRON** are **TRX** or **SUN**.
    - After we get our contract working in Remix, we will make the necessary changes make it compatible with the TRON protocol.
 
 #### Our Contract
+
+1. **Solidity Compiler Version:**
+
+   - You should be seeing a yellow warning box to the right with this message: browser/ECommerce.sol:1:1: Warning: Source file does not specify required compiler version! Consider adding "pragma solidity ^0.5.1;"
+   - If you have followed the instructions so far, you should have se the current compiler version to "0.4.25+commit.59dbf8f1". The error is being caused because our file is empty and does not specify the required compiler version. In our application, this version is specified in the `package.json` file as `"solc": "^0.4.25"`.
+   - We can fix this by adding this to the first line of our contract: `pragma solidity ^0.4.23;`. The keyword `pragma` is used to specify which version of Solidity is used in our source file. The version specified here must be less than the version specified in the compile tab or the version used in the Compiler.
+
+2. **Name our Contract:**
+   - Add this block below version specification.
+
+```
+ contract ECommerce {
+
+   }
+```
+
+    - `contract` is the type specification of `ECommerce` smart contract.
+    - All of the contract methods will go between the two curly braces (`{}`).
+    - On the right you should see a green box with `ECommerce` in it.
+    - _Green_: You are on the right track! Keep going! (_Yellow_: Something is up. May be worth looking into, may be nothing. _Red_: Uh-oh! We need to go back and fix something. This is not going to compile.)
+
+### Everything below this will be done within the ECommerce contract.
+
+3.  **Setting Up Variables**
+    Solidity is a statically typed language so data types (string, uint, etc.) must be explicitly defined. You can learn more of the datatypes [here](https://solidity.readthedocs.io/en/v0.4.24/types.html).
+
+    1.  Item struct:
+
+        - A `struct` is how we define new data types in Solidity. As an e-Commerce store, we need items to sell. Let us define an `Item` struct within the ECommerce contract.
+
+        ```
+        struct Item {
+
+            }
+        ```
+
+        - Our `Item` data type will need some properties such as id, name, price, seller, buyer
+        - Add the following to out Item struct:
+          - `uint id;` (declare the **id** property as type _uint_)
+          - `string name;` (declare the **name** property as type _string_)
+          - `uint price;` (declare the **price** property as type _uint_)
+          - `bool available;` (declare the **available** property as type _boolean_)
+          - `address seller;` (declare the **seller** property as type _address_)
+          - `address buyer;` (declare the **buyer** property as type _address_)
+        - Your item struct should look like this now:
+
+        ```
+        struct Item {
+            uint id;
+            string name;
+            uint price;
+            bool available;
+            address seller;
+            address buyer;
+        }
+        ```
+
+    2.  Items mapping
+
+        - A mapping is comparable to a hash table in many other languages. In solidity, it is virtually initialized in a way that every possible _key_ exists and map to a value whose byte-representation is all _zeros_. Learn more [here](https://solidity.readthedocs.io/en/v0.4.24/types.html).
+        - Let us add `mapping (uint => Item) items;` below our Item struct. This will initialize an "empty" _mapping_ called _items_.
+        - We will use a mapping to store our Item structs with the `id` as the _key_ and the `Item struct` as the _value_.
+        - This is so we can keep track of and check if an item exists at an `id` before we add it to our store.
+        - This also poses us with a small challenge:
+
+          - We learned that all _keys_ are in "existence" when our map is initialized. Meaning that if we try to access an Item at a _key_ that we did not intentionally add, it will not return a null/nil/undefined in many other languages. It will return a **0**.
+          - One approach to address this issue is to add a property "exists" to our Item struct. (`bool exists;`)
+          - Our Item struct should now look like this:
+
+                ```
+                struct Item {
+                    uint id;
+                    string name;
+                    uint price;
+                    bool available;
+                    address seller;
+                    address buyer;
+                    bool exists;
+                }
+                ```
+
+            - Now, if we try to access an Item in the struct we can be sure by accessing the exists property of the Item struct and checking if it is `true`. (`items[id].exists == true`)
+
+    3.  Total items
+
+        - In order to make our lives easier, let us add a way to check the total number of Items in our items mapping.
+        - Add `uint totalItems;` below the items mapping declaration.
+        - `totalItems` currently has the value **0** as variables initialize with a default value of **0** in solidity.
+
+4.  **Constructor**
+
+    - Constructors are used to initialize our contract and its variables with some default values.
+    - Constructors are optional. If you do not need to initialize your contract with defaults, you may choose to not include a constructor in your contract.
+    - We will use a constructor in our contract to ensure that `totalItems` is indeed set to zero when we initialize out contract.
+    - Add this below `totalItems`
+
+    ```
+    constructor () public {
+        totalItems = 0;
+    }
+    ```
+
+    - A function can either be classified as private, public, internal or external:
+      - Public: it can be accessed by all. This is the default for all functions.
+      - Private: it can only be accessed within the contract.
+      - Internal: Can only be accessed only by this contract and contracts deriving form it.
+      - External: Cannot be accessed internally, _only_ externally.
+    - A constructor can only be labeled internal or public.
 
 ---
 

@@ -36,7 +36,7 @@
     "babel-register": "^6.26.0",
     "move-cli": "^1.2.0",
     "rimraf": "^2.6.3",
-    "solc": "^0.5.3"
+    "solc": "^0.4.25"
   },
   "browserslist": [
     ">0.2%",
