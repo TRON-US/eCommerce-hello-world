@@ -133,7 +133,7 @@ this.setState({
 - In this part, we will explore the tools we use to build a smart contract.
 - Smart contracts are essentially an efficient way to execute transparent and conflict-free transactions online without requiring services of third parties and middlemen.
 - We will use a contract-oriented, high-level language for implementing smart contracts called Solidity. You can check out more in-depth information about Solidity in their documentation [here](https://solidity.readthedocs.io/en/v0.4.24/).
-- We will also use [Remix](https://remix.ethereum.org/), a powerful, open source tool that helps you write Solidity contracts straight from the browser. Written in JavaScript, Remix supports both usage in the browser and locally. Check out the documentation [here](https://remix.readthedocs.io/en/latest/).
+- We will also use [Remix](https://remix.ethereum.org/), a powerful, open source tool that helps you write Solidity contracts straight from the browser. built for Ethereum and written in JavaScript, Remix supports both usage in the browser and locally. Check out the documentation [here](https://remix.readthedocs.io/en/latest/).
 
 Resources:
 
@@ -148,9 +148,40 @@ Now that you have acquainted yourself with the tools, let us get started writing
 
 ### Remix
 
-1. First, navigate to [Remix](https://remix.ethereum.org/).
-2. The landing page for Remix will look like this:
-   ![Remix Landing Page](./public/images/remix-landing.png)
+#### Introduction
+
+- First, navigate to [Remix](https://remix.ethereum.org/).
+- The landing page for Remix will look like this:
+  ![Remix Landing Page](./public/images/remix-landing.png)
+- It comes pre-loaded with an example Ballot Contract. Feel free to look around and try to understand what is going on. Walkthrough: [Solidity by Example](https://solidity.readthedocs.io/en/v0.4.24/solidity-by-example.html).
+- We will briefly go through some major parts of Remix complete tour can be found [here](https://remix.readthedocs.io/en/latest/solidity_editor.html).
+
+  - The _file explorer_ section on the left will display all the files you have created in Remix. In the "browser" directory is where you will find the contracts you have created. ![File Explorer](./public/images/remix-file-explorer)
+  - The section in the middle is the _Editor_ or _RemixIDE_ where your contract files are compiled. This will also show open files and syntax highlighting mapped to Solidity keywords. ![Remix Editor](./public/images/remix-editor)
+  - Below the editor is the _Terminal_ which is helpful to view logs of transactions, interact with the RemixIDE and begin debugging. ![Remix Terminal](./public/images/remix-terminal).
+  - To the right, we will be focusing on 3 tabs - Compile, Run, and Testing but I urge you to learn more about all of them.
+    - The _Compile_ tab is where we will select the compiler version we want Remix to use and also enable some settings to make the process easier on ourselves.![Compile Tab](./public/images/remix-compile-initial)
+    - the _Run_ tab is where we will deploy and interact with our contract. We can also configure which environment we want Remix to connect to. We will stick with _JavaScript VM_ for now as the other two environments will require external tools. Web3 provider requires an Ethereum Node and Injected provider requires MetaMask or Mint. _MetaMask_ is similar to our _TronLink_ and injects _TronWeb_ which is comparable to _Web3_. ![Run Tab](./public/images/remix-run-initial)
+    - The _Debugger_ tab is were we can walkthrough and debug our smart contract if we face some issues. (_More on this later_) ![Debugging Tab](./public/images/remix-debugger-initial)
+
+#### Setup
+
+1. Let us begin by creating a new contract file. (N.B. All Solidity files have a .sol extension)
+   - In the top right, near the _file explorer_ section, click on the circle with a plus to create a new file.
+   - You should see a pop up to alter the name of the default "Untitled.sol". You may call your file anything but note that it is a general rule of thumb to name it after the contract defined in it. Let us call this file "ECommerce.sol" as our contract will be called "ECommerce".
+   - On successfully submitting the name, you should see your new, blank file (browser/ECommerce.sol) displayed in the _Editor_.
+2. Compile tab:
+   - In the dropdown that should currently be displaying _Select new compiler version_, scroll down the long list and select "0.4.25+commit.59dbf8f1". Currently, the max compiler version compatible with TRON is 0.4.25.
+   - Above the dropdown, it should display "Current version:0.4.25+commit.59dbf8f1.Emscripten.clang"
+   - Below the dropdown, we will also check the "Auto compile" box. This will recompile our Smart Contract on changes.
+3. Run tab:
+   - The Environment should be JavaScript VM
+   - Account will have 5 test accounts with 100 Ether for testing within Remix. Note that the hash next to the "(100 Ether)" is the public address of that account, similar to your public address from TronLink. Right next to it is an option to copy the address of the currently selected account (_for future reference_).
+   - The Gas limit will be defaulted to 3000000. We will leave this as is for now but you can learn more [here](https://masterthecrypto.com/ethereum-what-is-gas-gas-limit-gas-price/). This is similar to _Energy_ and _Bandwidth_ on _TRON_.
+   - Value should be 0 and the denomination set to "Wei". you can learn more about Ethereum denominations [here](http://ethdocs.org/en/latest/ether.html). The denominations used on _TRON_ are _TRX_ or _SUN_.
+   - After we get our contract working in Remix, we will make the necessary changes make it compatible with the TRON protocol.
+
+#### Our Contract
 
 ---
 
