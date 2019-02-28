@@ -197,7 +197,7 @@ Now that you have acquainted yourself with the tools, let us get started writing
    }
 ```
 
-    - `contract` is the type specification of `ECommerce` smart contract.
+    - A `contract` is the type specification of `ECommerce` smart contract.
     - All of the contract methods will go between the two curly braces (`{}`).
     - On the right you should see a green box with `ECommerce` in it.
     - _Green_: You are on the right track! Keep going! (_Yellow_: Something is up. May be worth looking into, may be nothing. _Red_: Uh-oh! We need to go back and fix something. This is not going to compile.)
@@ -288,7 +288,7 @@ Now that you have acquainted yourself with the tools, let us get started writing
       - Private: it can only be accessed within the contract.
       - Internal: Can only be accessed only by this contract and contracts deriving form it.
       - External: Cannot be accessed internally, _only_ externally.
-    - A constructor can only be labeled internal or public.
+    - A constructor should be labeled internal or public.
 
 ---
 
