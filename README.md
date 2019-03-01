@@ -121,9 +121,8 @@ this.setState({
    - Uncomment the `fetchAccountBandwidth` function (ln 50 - ln 55).
    - Now uncomment the function call on line 21 in the `componentDidMount` function.
    - In the browser, you should now see the bandwidth balance of your account.
-6. Your app should now look like this!
-
-![ECommerce Setup](./public/images/ECommerce-setup.png)
+6. Your app should now look like this:
+   ![Application Setup](./public/images/ECommerce-setup.png)
 
 ### Congratulations! You have completed the first part of this guide! In the next part, we will write out smart contract before moving on to connecting our front-end to our smart-contract on the blockchain!
 
