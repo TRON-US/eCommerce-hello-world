@@ -121,6 +121,8 @@ this.setState({
    - Uncomment the `fetchAccountBandwidth` function (ln 50 - ln 55).
    - Now uncomment the function call on line 21 in the `componentDidMount` function.
    - In the browser, you should now see the bandwidth balance of your account.
+6. Your app should now look like this!
+   [ECommerce Setup](./public/images/ECommerce-setup.png)
 
 ### Congratulations! You have completed the first part of this guide! In the next part, we will write out smart contract before moving on to connecting our front-end to our smart-contract on the blockchain!
 
@@ -194,7 +196,7 @@ Now that you have acquainted yourself with the tools, let us get started writing
 ```
  contract ECommerce {
 
-   }
+ }
 ```
 
     - A `contract` is the type specification of `ECommerce` smart contract.
@@ -275,7 +277,7 @@ Now that you have acquainted yourself with the tools, let us get started writing
     - Constructors are used to initialize our contract and its variables with some default values.
     - Constructors are optional. If you do not need to initialize your contract with defaults, you may choose to not include a constructor in your contract.
     - We will use a constructor in our contract to ensure that `totalItems` is indeed set to zero when we initialize out contract.
-    - Add this below `totalItems`
+    - Add this below `totalItems`:
 
     ```
     constructor () public {
@@ -289,6 +291,41 @@ Now that you have acquainted yourself with the tools, let us get started writing
       - Internal: Can only be accessed only by this contract and contracts deriving form it.
       - External: Cannot be accessed internally, _only_ externally.
     - A constructor should be labeled internal or public.
+
+5.  **Contract Functions**
+    Now that we have set up your contract, let us create some functions to actually interact with it.
+
+    1. **Add Item:** Allow us to add items to our store.
+
+       ```
+       function addItem (string _name, uint _price) public {
+         }
+       ```
+
+       - `function` specifies that this is a function.
+       - `addItem` is the name of our function.
+       - `(string _name, uint _price)` are the input values (name, string) with their type specified (sting, uint). The underscore in Solidity is used to distinguish between global variables and function parameter.
+       - `public` specifies that the function can be accessed by all.
+       - Add the following to the addItem function.
+
+         1. `uint itemId = totalItems;` Creates a unique id for each item based on totalItems in the store.
+         2. `require(!items[itemId].exists);` This is a check we can add to make sure that the item is not in the `items` mapping, using the exists property of the item, before we assign the same id to another item we add.
+         3. `address sellerAddress = msg.sender;` Creates a variable `sellerAddress` with type `address` that we set using the `msg.sender` which exists on every every interaction a user has with the contract. This is the public address of the users account.
+         4. Add the item to the mapping and assign it to the key `itemId`. This also assigns values to the properties of the Item.
+
+         ```
+         items[itemId] = Item({
+            id: itemId,                               // unique id for the item
+            name: _name,                              // name of the item, passed in from the user as a parameter of the function
+            available: true,                          // set to true (available) as it was just added to the store
+            price: (_price * 1000000000000000000),    // price of the item, passed in from the user as a parameter of the function
+            seller: sellerAddress,                    // address of the person that added this item to the store
+            buyer: 0,                                 // set to 0 by default as nobody has bought the item
+            exists: true                              // to allow checking if the item at an id exists in the mapping, set to true
+         });
+         ```
+
+         5. `totalItems += 1;` updates the total items variable by one when we add the item.
 
 ---
 
