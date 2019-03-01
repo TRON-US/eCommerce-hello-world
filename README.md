@@ -85,7 +85,7 @@ PK="enter/paste your private key here"
 ### Let us see TronLink and TronWeb in action
 
 1. Launch the application by running `npm run start` in the terminal.
-2. You should now see the application running in the browser.
+2. Your application should now be running in the browser window and look something like this: ![Initial Application](./public/images/initial-application-launch.png)
 3. In the browser, on the top right, you should see the "Account Information" section. This is the first part we will set up.
 
 4. In your text-editor, navigate to the ./src/components/TronLinkInfo/index.js file.
@@ -121,7 +121,7 @@ this.setState({
    - Uncomment the `fetchAccountBandwidth` function (ln 50 - ln 55).
    - Now uncomment the function call on line 21 in the `componentDidMount` function.
    - In the browser, you should now see the bandwidth balance of your account.
-6. Your app should now look like this:
+6. Your app should now look something like this:
    ![Application Setup](./public/images/ECommerce-setup.png)
 
 ### Congratulations! You have completed the first part of this guide! In the next part, we will write out smart contract before moving on to connecting our front-end to our smart-contract on the blockchain!
@@ -315,13 +315,13 @@ Now that you have acquainted yourself with the tools, let us get started writing
 
          ```
          items[itemId] = Item({
-            id: itemId,                               // unique id for the item
-            name: _name,                              // name of the item, passed in from the user as a parameter of the function
-            available: true,                          // set to true (available) as it was just added to the store
-            price: (_price * 1000000000000000000),    // price of the item, passed in from the user as a parameter of the function
-            seller: sellerAddress,                    // address of the person that added this item to the store
-            buyer: 0,                                 // set to 0 by default as nobody has bought the item
-            exists: true                              // to allow checking if the item at an id exists in the mapping, set to true
+            id: itemId,                             // unique id for the item
+            name: _name,                            // name of the item, passed in from the user as a parameter of the function
+            available: true,                        // set to true (available) as it was just added to the store
+            price: (_price * 1000000000000000000),  // price of the item converted to WEI, passed in from the user as a parameter
+            seller: sellerAddress,                  // address of the person that added this item to the store
+            buyer: 0,                               // set to 0 by default as nobody has bought the item
+            exists: true                            // to allow checking if the item at an id exists in the mapping, set to true
          });
          ```
 

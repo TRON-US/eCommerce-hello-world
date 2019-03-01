@@ -16,44 +16,44 @@ export default class TronLinkInfo extends Component {
   // Uncomment each function below then uncomment each call,
   // one at a time to see your account information filled out
   componentDidMount() {
-    this.fetchAccountAddress();
-    this.fetchAccountBalance();
-    this.fetchAccountBandwidth();
+    // this.fetchAccountAddress();
+    // this.fetchAccountBalance();
+    // this.fetchAccountBandwidth();
   }
 
   // The function below will return an object with address, balance, create_time,
   // account_resource
-  async fetchAccountAddress() {
-    const account = await window.tronWeb.trx.getAccount();
-    const accountAddress = account.address; // Hex
-    //   // const accountAddressInASCii = window.tronWeb.address.fromHex(
-    //   //   accountAddress
-    //   // ); // ASCii
-    //
-    this.setState({
-      accountAddress: accountAddress
-    });
-  }
+  // async fetchAccountAddress() {
+  //   const account = await window.tronWeb.trx.getAccount();
+  //   const accountAddress = account.address; // Hex
+  //   // const accountAddressInASCii = window.tronWeb.address.fromHex(
+  //   //   accountAddress
+  //   // ); // ASCii
+  //
+  //   this.setState({
+  //     accountAddress: accountAddress
+  //   });
+  // }
 
   // The function below will return the account balance in SUN as a number
-  async fetchAccountBalance() {
-    const balanceInSun = await window.tronWeb.trx.getBalance(); //number
-    const balanceInTRX = window.tronWeb.fromSun(balanceInSun); //string
-    //   // const changeBackToSun = window.tronWeb.toSun(balanceInTRX); //string
-    //
-    this.setState({
-      accountBalance: balanceInTRX
-    });
-  }
+  // async fetchAccountBalance() {
+  //   const balanceInSun = await window.tronWeb.trx.getBalance(); //number
+  //   // const balanceInTRX = window.tronWeb.fromSun(balanceInSun); //string
+  //   // const changeBackToSun = window.tronWeb.toSun(balanceInTRX); //string
+  //
+  //   this.setState({
+  //     accountBalance: balanceInSun
+  //   });
+  // }
 
   // The function below will return the account bandwidth as a number
-  async fetchAccountBandwidth() {
-    const accountBandwidth = await window.tronWeb.trx.getBandwidth(); // number
-    //
-    this.setState({
-      accountBandwidth: accountBandwidth
-    });
-  }
+  // async fetchAccountBandwidth() {
+  //   const accountBandwidth = await window.tronWeb.trx.getBandwidth(); // number
+  //
+  //   this.setState({
+  //     accountBandwidth: accountBandwidth
+  //   });
+  // }
 
   render() {
     const { accountAddress, accountBalance, accountBandwidth } = this.state;
