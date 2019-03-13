@@ -93,11 +93,11 @@ PK="enter/paste your private key here"
    - Begin by uncommenting the `fetchAccountAddress` function (ln 26 - ln 36).
    - Now uncomment the function call on line 19 in the `componentDidMount` function.
    - If you go back to the browser, you should now see your account address displaying in Hex format.
-   - If you would like to see this displayed in ASCii format, uncomment lines 29 to 32 and change the `setState` function on line 33 to look like:
+   - If you would like to see this displayed in Base58 format, uncomment lines 29 to 32 and change the `setState` function on line 33 to look like:
 
 ```
 this.setState({
-accountAddress: accountAddressInASCii
+accountAddress: accountAddressInBase58
 });
 
 ```
@@ -204,7 +204,7 @@ Now that you have acquainted yourself with the tools, let us get started writing
     - On the right you should see a green box with `ECommerce` in it.
     - _Green_: You are on the right track! Keep going! (_Yellow_: Something is up. May be worth looking into, may be nothing. _Red_: Uh-oh! We need to go back and fix something. This is not going to compile.)
 
-### Everything below this will be done within the ECommerce contract.
+#### Everything below this will be done within the ECommerce contract.
 
 3.  **Setting Up Variables**
     Solidity is a statically typed language so data types (string, uint, etc.) must be explicitly defined. You can learn more of the datatypes [here](https://solidity.readthedocs.io/en/v0.4.24/types.html).
@@ -272,7 +272,19 @@ Now that you have acquainted yourself with the tools, let us get started writing
         - Add `uint totalItems;` below the items mapping declaration.
         - `totalItems` currently has the value **0** as variables initialize with a default value of **0** in solidity.
 
-4.  **Constructor**
+4.  **Events**
+
+    - According to the solidity docs, "Events allow the convenient usage of the EVM logging facilities, which in turn can be used to “call” JavaScript callbacks in the user interface of a dApp, which listen for these events." Learn more [here](https://solidity.readthedocs.io/en/v0.4.21/contracts.html#events).
+    - Essentially, when we add items or buy items, we want to emit these events. Events will be provide useful data on the frontend of our dApp.
+    - Events are specified with an `event` type followed by their name. In parentheses we specify the parameters an event will emit along with datatypes.
+    - Add these two events below `totalItems`:
+
+    ```
+    event Added(uint id, string name, address indexed seller, bool available, bool exists, uint totalItems);
+    event Purchased(uint id, string name, address indexed seller, address indexed buyer, bool available);
+    ```
+
+5.  **Constructor**
 
     - Constructors are used to initialize our contract and its variables with some default values.
     - Constructors are optional. If you do not need to initialize your contract with defaults, you may choose to not include a constructor in your contract.
@@ -292,10 +304,22 @@ Now that you have acquainted yourself with the tools, let us get started writing
       - External: Cannot be accessed internally, _only_ externally.
     - A constructor should be labeled internal or public.
 
-5.  **Contract Functions**
+6.  **Contract Functions**
     Now that we have set up your contract, let us create some functions to actually interact with it.
 
-    1. **Add Item:** Allow us to add items to our store.
+    1. **checkItemsTotal** Checks how many items in the store.
+
+       ```
+         function checkItemsTotal() public view returns (uint total) {
+             return totalItems;
+         }
+       ```
+
+       - `public` anyone can call this.
+       - `view` reads from contract but does not alter state
+       - `return` a uint, `totalItems` in the store/contract
+
+    2. **addItem** Allow us to add items to our store.
 
        ```
        function addItem (string _name, uint _price) public {
@@ -306,7 +330,7 @@ Now that you have acquainted yourself with the tools, let us get started writing
        - `addItem` is the name of our function.
        - `(string _name, uint _price)` are the input values (name, string) with their type specified (sting, uint). The underscore in Solidity is used to distinguish between global variables and function parameter.
        - `public` specifies that the function can be accessed by all.
-       - Add the following to the addItem function.
+       - Add the following to the addItem function:
 
          1. `uint itemId = totalItems;` Creates a unique id for each item based on totalItems in the store.
          2. `require(!items[itemId].exists);` This is a check we can add to make sure that the item is not in the `items` mapping, using the exists property of the item, before we assign the same id to another item we add.
@@ -326,7 +350,94 @@ Now that you have acquainted yourself with the tools, let us get started writing
          ```
 
          5. `totalItems += 1;` updates the total items variable by one when we add the item.
+         6. `emit Added(items[itemId].id, items[itemId].name, items[itemId].seller, items[itemId].available, items[itemId].exists, totalItems);` emits the `Added` event upon successful adding of an item.
 
----
+    3. **buyItem** allows the purchase an item from our store.
+
+
+        ```
+        function buyItem(uint _id) public payable returns (bool success, address seller, address buyer) {
+          require(items[_id].exists == true, "This item does not exist. Please check the id and try again.");
+          require(items[_id].available == true, "This item is no longer available.");
+          require(items[_id].seller != 0, "This item has no seller");
+          require(items[_id].buyer == 0, "This item is no longer available");
+          require(items[_id].price == msg.value, "Not enough TRX to buy this item.");
+
+          address _buyerAddress = msg.sender;
+
+          _handlePurchase(_id, _buyerAddress, msg.value);
+
+          emit Purchased(_id, items[_id].name, items[_id].seller, items[_id].buyer, items[_id].available);
+
+          return (true, items[_id].seller, items[_id].buyer);
+
+        }
+
+        ```
+        1. the function `buyItem` takes the `uint id` of the item being purchased.
+        2. It is `public` (callable by anyone) and `payable` (allows function to receive tokens).
+        3. On successful execution, it `returns` a `bool success`, the addresses of the `seller` and `buyer`.
+        4. 5 `require` statements are checking to ensure that this is a valid transaction:
+            - First, check if an item at this id exists.
+            - Second, check if item is available.
+            - Third, check that the item has a valid seller.
+            - Fourth, check that the item currently has no buyer.
+            - Fifth, check that the amount sent with the function is equal to the price of the item.
+            - If any of these `require` statements fail, it will `revert` the transaction. Revert will cancel the transaction and return any __unused__ Ethereum: gas or TRON: energy/bandwidth.
+        5. Set local variable `_buyerAddress` to `msg.sender`: the address of the person that called this function.
+        6. Calls a contract function `_handlePurchase` to execute the purchase. We will write this next.
+        7. Emits the `Purchased` event.
+        8. Returns with the specified return parameters.
+
+    4. **_handlePurchase** executes the actual purchase of the item.
+        ```
+        function _handlePurchase(uint _id, address _buyerAddress, uint _value) internal {
+          items[_id].available = false;
+          items[_id].buyer = _buyerAddress;
+          items[_id].seller.transfer(_value);
+        }
+        ```
+        1. The function `_handlePurchase` is an `internal` (accessed by this contract) function. Internal function names are usually led by and underscore `_`.
+        2. Sets the item's availability in the `items` mapping to `false`.
+        3. Sets the item's buyer address to the `_buyerAddress` passed in.
+        4. Transfers the tokens(`_value`) to the `seller` of the item.
+
+#### That's it! Below we will check that our contract functions as expected in Remix before we move it to our application!
+
+7. **Testing our contract in Remix**
+
+   1. Add this function just for testing purposes in Remix.
+
+      ```
+      function fetchItem(uint8 _id) public view returns (uint itemId, string name, uint price, bool available, address seller, address buyer, bool exists) {
+        return (items[_id].id, items[_id].name, items[_id].price, items[_id].available, items[_id].seller, items[_id].buyer, items[_id].exists);
+      }
+      ```
+
+      - This function will allow us to call the items mapping to to retrieve information about an item by its id (a number greater than or equal to 0 and less than `totalItems`).
+
+   2. Go to the run tab on the right side. (Refer above for walkthrough of Remix)
+
+      - Environment: should be set to JavaScriptVM.
+      - Account: 5 default test accounts with 100 test Ether provided by Remix.
+      - Gas limit: 3000000 (wei).
+      - Value: 0 , wei.
+
+   3. ECommerce should be selected in the next block right above the Deploy button.
+
+      - Click the Deploy button.
+      - You should see something similar to "ECommerce at 0xdc0...46222(memory)" in the deployed contracts block.
+      - Click on this to see the contracts functions for us to test.
+
+   4. Play around with each of the functions here to get a better understanding of what our contract is doing.
+
+      - Check how many items are in the store. (`checkItemsTotal`)
+      - Add an item to the store. (`addItem`)
+      - Retrieve information about the item(s) you added using their id. (`fetchItem`) This use an id of 0 if none is provided.
+      - When using the `buyItem` function, be sure to change the Value above to match the **price of the item** which has been converted to wei. You can choose to change the denomination of the value or use the accurate amount in wei.
+      - Use `fetchItem` and check that the values of the bought items have changed.
+      - Change the accounts above (between the 5 provided) and see the balances change on purchase.
+
+## ###Congratulations! you have written your first smart contract! In the next section we will we will deploy our contract on the blockchain and tie it to our application!
 
 ## Part III
