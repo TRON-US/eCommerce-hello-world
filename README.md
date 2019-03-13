@@ -440,6 +440,6 @@ Now that you have acquainted yourself with the tools, let us get started writing
       - Change the accounts above (between the 5 provided) and see the balances change on purchase.
       - Click the **Debugger** tab or the **Debug** button next to a transaction in the terminal and step through the functions.
 
-###Congratulations! You have completed the second part of this guide and written your own smart contract! In the next section we will we will deploy our contract on the blockchain and tie it to our application!
+### Congratulations! You have completed the second part of this guide and written your own smart contract! In the next section we will we will deploy our contract on the blockchain and tie it to our application!
 
 ## Part III
