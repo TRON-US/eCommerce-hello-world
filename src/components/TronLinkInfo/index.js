@@ -21,21 +21,21 @@ export default class TronLinkInfo extends Component {
     // this.fetchAccountBandwidth();
   }
 
-  // The function below will return an object with address, balance, create_time,
-  // account_resource
+  // // The function below will return an object with address, balance, create_time,
+  // // account_resource;
   // async fetchAccountAddress() {
   //   const account = await window.tronWeb.trx.getAccount();
-  //   const accountAddress = account.address; // Hex
-  //   // const accountAddressInASCii = window.tronWeb.address.fromHex(
+  //   const accountAddress = account.address; // HexString(Ascii)
+  //   // const accountAddressInBase58 = window.tronWeb.address.fromHex(
   //   //   accountAddress
-  //   // ); // ASCii
+  //   // ); // Base58
   //
   //   this.setState({
   //     accountAddress: accountAddress
   //   });
   // }
-
-  // The function below will return the account balance in SUN as a number
+  //
+  // // The function below will return the account balance in SUN as a number
   // async fetchAccountBalance() {
   //   const balanceInSun = await window.tronWeb.trx.getBalance(); //number
   //   // const balanceInTRX = window.tronWeb.fromSun(balanceInSun); //string
@@ -45,8 +45,8 @@ export default class TronLinkInfo extends Component {
   //     accountBalance: balanceInSun
   //   });
   // }
-
-  // The function below will return the account bandwidth as a number
+  //
+  // // The function below will return the account bandwidth as a number
   // async fetchAccountBandwidth() {
   //   const accountBandwidth = await window.tronWeb.trx.getBandwidth(); // number
   //
