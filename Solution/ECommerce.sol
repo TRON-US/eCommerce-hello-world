@@ -38,7 +38,7 @@ contract ECommerce {
             id: itemId,
             name: _name,
             available: true,
-            price: (_price * 1000000000000000000),
+            price: (_price * 1000000), // The conversion for TRX to sun is 1 : 1000000
             seller: sellerAddress,
             buyer: 0,
             exists: true

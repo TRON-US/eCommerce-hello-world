@@ -7,6 +7,12 @@
 - Make sure you have Google Chrome Installed. If it is not installed, you can install it form here: [install Chrome](https://support.google.com/chrome/answer/95346?co=GENIE.Platform%3DDesktop&hl=en-GB).
 - Some familiarity with programming, using GitHub, text-editor/IDE and terminal.
 
+#### Overview
+
+- In the 1st part of this tutorial we will get an introduction to the dApp we will build along with some tools and the TRON test network: Shasta.
+- We will set up TronWeb, similar to Web3.js, which will be injected through TronLink and will allow us to interact with the protocol.
+- We will create a TronLink account, access some test TRX, and interact with TronLink and the Shasta network via our dApp.
+
 ### TronLink
 
 - If you do not have TronLink already installed, you will need to install it from the Chrome Web Store: [install TronLink](https://chrome.google.com/webstore/detail/tronlink/ibnejdfjmmkpcnlpebklmnkoeoihofec?hl=en-US).
@@ -85,7 +91,7 @@ PK="enter/paste your private key here"
 ### Let us see TronLink and TronWeb in action
 
 1. Launch the application by running `npm run start` in the terminal.
-2. Your application should now be running in the browser window and look something like this: ![Initial Application](./public/images/initial-application-launch.png)
+2. Your application should now be running in the browser window and look something like this: ![Initial Application](./public/reference-images/initial-application-launch.png)
 3. In the browser, on the top right, you should see the "Account Information" section. This is the first part we will set up.
 
 4. In your text-editor, navigate to the ./src/components/TronLinkInfo/index.js file.
@@ -122,7 +128,7 @@ this.setState({
    - Now uncomment the function call on line 21 in the `componentDidMount` function.
    - In the browser, you should now see the bandwidth balance of your account.
 6. Your app should now look something like this:
-   ![Application Setup](./public/images/ECommerce-setup.png)
+   ![Application Setup](./public/reference-images/ECommerce-setup.png)
 
 ### Congratulations! You have completed the first part of this guide! In the next part, we will write out smart contract before moving on to connecting our front-end to our smart-contract on the blockchain!
 
@@ -154,17 +160,17 @@ Now that you have acquainted yourself with the tools, let us get started writing
 
 - First, navigate to [Remix](https://remix.ethereum.org/).
 - The landing page for Remix will look like this:
-  ![Remix Landing Page](./public/images/remix-landing.png)
+  ![Remix Landing Page](./public/reference-images/remix-landing.png)
 - It comes pre-loaded with an example Ballot Contract. Feel free to look around and try to understand what is going on. Walkthrough: [Solidity by Example](https://solidity.readthedocs.io/en/v0.4.24/solidity-by-example.html).
 - We will briefly go through some major parts of Remix complete tour can be found [here](https://remix.readthedocs.io/en/latest/solidity_editor.html).
 
-  - The **file explorer** section on the left will display all the files you have created in Remix. In the "browser" directory is where you will find the contracts you have created. ![File Explorer](./public/images/remix-file-explorer.png)
-  - The section in the middle is the **Editor** or **RemixIDE** where your contract files are compiled. This will also show open files and syntax highlighting mapped to Solidity keywords. ![Remix Editor](./public/images/remix-editor.png)
-  - Below the editor is the **Terminal** which is helpful to view logs of transactions, interact with the RemixIDE and begin debugging. ![Remix Terminal](./public/images/remix-terminal.png)
+  - The **file explorer** section on the left will display all the files you have created in Remix. In the "browser" directory is where you will find the contracts you have created. ![File Explorer](./public/reference-images/remix-file-explorer.png)
+  - The section in the middle is the **Editor** or **RemixIDE** where your contract files are compiled. This will also show open files and syntax highlighting mapped to Solidity keywords. ![Remix Editor](./public/reference-images/remix-editor.png)
+  - Below the editor is the **Terminal** which is helpful to view logs of transactions, interact with the RemixIDE and begin debugging. ![Remix Terminal](./public/reference-images/remix-terminal.png)
   - To the right, we will be focusing on 3 tabs - Compile, Run, and Testing but I urge you to learn more about all of them.
-    - The **Compile** tab is where we will select the compiler version we want Remix to use and also enable some settings to make the process easier on ourselves.![Compile Tab](./public/images/remix-compile-initial.png)
-    - the **Run** tab is where we will deploy and interact with our contract. We can also configure which environment we want Remix to connect to. We will stick with **JavaScript VM** for now as the other two environments will require external tools. Web3 provider requires an Ethereum Node and Injected provider requires MetaMask or Mint. **MetaMask** is similar to our **TronLink** and injects **TronWeb** which is comparable to **Web3**. ![Run Tab](./public/images/remix-run-initial.png)
-    - The **Debugger** tab is were we can walkthrough and debug our smart contract if we face some issues. (_More on this later_) ![Debugging Tab](./public/images/remix-debugger-initial.png)
+    - The **Compile** tab is where we will select the compiler version we want Remix to use and also enable some settings to make the process easier on ourselves.![Compile Tab](./public/reference-images/remix-compile-initial.png)
+    - the **Run** tab is where we will deploy and interact with our contract. We can also configure which environment we want Remix to connect to. We will stick with **JavaScript VM** for now as the other two environments will require external tools. Web3 provider requires an Ethereum Node and Injected provider requires MetaMask or Mint. **MetaMask** is similar to our **TronLink** and injects **TronWeb** which is comparable to **Web3**. ![Run Tab](./public/reference-images/remix-run-initial.png)
+    - The **Debugger** tab is were we can walkthrough and debug our smart contract if we face some issues. (_More on this later_) ![Debugging Tab](./public/reference-images/remix-debugger-initial.png)
 
 #### Setup
 
@@ -443,3 +449,25 @@ Now that you have acquainted yourself with the tools, let us get started writing
 ### Congratulations! You have completed the second part of this guide and written your own smart contract! In the next section we will we will deploy our contract on the blockchain and tie it to our application!
 
 ## Part III
+
+#### Overview
+
+- In this final part of the guide, we will import our contract from Remix into our application and edit it to modify it to be suitable for the TRON network.
+- We will compile and migrate our contract on the the Shasta test network using TronBox.
+- Lastly, we will connect our smart contract to the front-end of our dApp so we can interact with it as any other website.
+
+#### First,
+
+- Let's make sure our terminal is open and you are in the project's root directory.
+- Make sure that your dApp is open in your favorite IDE/text editor (Atom, VSCode, etc.).
+- Refer to Part I if you have concerns about any of this.
+
+### Importing Contract to dApp
+
+- In your IDE, under the root folder, look for a directory labeled `contracts`. You should see a `Migrations.sol` file here already.
+- Within this directory, create a file called `ECommerce.sol` and open this blank file.
+- Copy your entire contract from Remix (from Part II) and paste it in this `ECommerce.sol` file.
+- In the `addItem` function, change `price: (_price * 1000000000000000000),` to `price: (_price * 1000000),`. This is because 1 Ether is equal to 1e18 wei (1,000,000,000,000,000,000) where 1 TRX is equal to 1e6 Sun (1,000,000).
+- Refer to the `ECommerce.sol` file in the Solution folder for reference.
+
+### Compiling & Migrating
