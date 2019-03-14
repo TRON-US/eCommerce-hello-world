@@ -340,19 +340,27 @@ Now that you have acquainted yourself with the tools, let us get started writing
        - Add the following to the addItem function:
 
          1. `uint itemId = totalItems;` Creates a unique id for each item based on totalItems in the store.
-         2. `require(!items[itemId].exists);` This is a check we can add to make sure that the item is not in the `items` mapping, using the exists property of the item, before we assign the same id to another item we add.
+         2. Below are checks we can add to make sure that the item is not in the `items` mapping, using the exists property of the item, before we assign the same id to another item we add. We are also checking that the name is not empty and the price is greater than 0.
+
+         ```
+         require(!items[itemId].exists, "An item already exists at this ID.");
+         require(!_name.length == 0, "Item name cannot be empty.")
+         require(_price > 0, "Price must be greater than zero (0).")
+         ```
+
+
          3. `address sellerAddress = msg.sender;` Creates a variable `sellerAddress` with type `address` that we set using the `msg.sender` which exists on every every interaction a user has with the contract. This is the public address of the users account.
          4. Add the item to the mapping and assign it to the key `itemId`. This also assigns values to the properties of the Item.
 
          ```
          items[itemId] = Item({
-            id: itemId,                             // unique id for the item
-            name: _name,                            // name of the item, passed in from the user as a parameter of the function
-            available: true,                        // set to true (available) as it was just added to the store
-            price: (_price * 1000000000000000000),  // price of the item converted to WEI, passed in from the user as a parameter
-            seller: sellerAddress,                  // address of the person that added this item to the store
-            buyer: 0,                               // set to 0 by default as nobody has bought the item
-            exists: true                            // to allow checking if the item at an id exists in the mapping, set to true
+         id: itemId,                             // unique id for the item
+         name: _name,                            // name of the item, passed in from the user as a parameter of the function
+         available: true,                        // set to true (available) as it was just added to the store
+         price: (_price * 1000000000000000000),  // price of the item converted to WEI, passed in from the user as a parameter
+         seller: sellerAddress,                  // address of the person that added this item to the store
+         buyer: 0,                               // set to 0 by default as nobody has bought the item
+         exists: true                            // to allow checking if the item at an id exists in the mapping, set to true
          });
          ```
 
@@ -468,6 +476,8 @@ Now that you have acquainted yourself with the tools, let us get started writing
 - Within this directory, create a file called `ECommerce.sol` and open this blank file.
 - Copy your entire contract from Remix (from Part II) and paste it in this `ECommerce.sol` file.
 - In the `addItem` function, change `price: (_price * 1000000000000000000),` to `price: (_price * 1000000),`. This is because 1 Ether is equal to 1e18 wei (1,000,000,000,000,000,000) where 1 TRX is equal to 1e6 Sun (1,000,000).
-- Refer to the `ECommerce.sol` file in the Solution folder for reference.
+- Refer to the [`ECommerce.sol` file](https://github.com/UjwalBattar/eCommerce-hello-world/blob/master/Solution/ECommerce.sol) in the Solution folder for reference.
 
 ### Compiling & Migrating
+
+### Linking the Front-End of our dApp to our Smart Contract
