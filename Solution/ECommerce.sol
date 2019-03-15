@@ -29,9 +29,10 @@ contract ECommerce {
 
     function addItem (string _name, uint _price) public {
         uint itemId = totalItems;
+
         require(!items[itemId].exists, "An item already exists at this ID.");
-        require(!_name.length == 0, "Item name cannot be empty.")
-        require(_price > 0, "Price must be greater than zero (0).")
+        require(bytes(_name).length > 0, "Item name cannot be empty.");
+        require(_price > 0, "Price must be greater than zero (0).");
 
         address sellerAddress = msg.sender;
 
