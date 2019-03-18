@@ -30,6 +30,54 @@ export default class ECommerce extends Component {
   componentDidMount() {
     this.startEventListener();
   }
+
+  addItem() {
+    const { totalItems, dataLength, allItems } = this.state;
+
+    if (totalItems >= dataLength) {
+      Swal({
+        title: "All items in data have been added to store.",
+        type: "error"
+      });
+      return;
+    }
+
+    let item = eCommerceData[totalItems];
+
+    item.price = `${parseFloat(Math.random() * 100).toFixed(1)} TRX`;
+
+    allItems.push(
+      <div className="eCommerce-item" key={totalItems}>
+        <img className="item-image" src={item.image} alt={item.name} />
+        <div className="item-name">{item.name}</div>
+        <div className="price-buy-container">
+          <div className="item-price">{item.price}</div>
+          <button className="buy-button" onClick={this.handlePurchase}>
+            Buy
+          </button>
+        </div>
+      </div>
+    );
+    Utils.contract
+      .addItem(item.name, item.price)
+      .send({
+        shouldPollResponse: true
+      })
+      .then(({ result }) => {
+        Swal.fire({
+          title: `${result.name} was added at index ${result.id}`,
+          html:
+            `<p>Price: ${result.price} SUN</p>` +
+            `<p>Seller: ${result.seller}</p>` +
+            `<p>Available: ${result.available}</p>`,
+          type: "success"
+        });
+      });
+
+    totalItems += 1;
+    return;
+  }
+
   }
 
   render() {
