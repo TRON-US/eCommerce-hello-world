@@ -490,7 +490,7 @@ Now that we have the smart contract in our application, we can go ahead and comp
 
     2. Now run `tronbox migrate --reset --network shasta` - This tells tronbox to use Shasta network, reset the network, and migrate the contracts onto the network./ - Your output should look similar to this:
 
-![contract-migration](./public/reference-images/contract-migrationshasta.png)
+![contract-migration](./public/reference-images/contract-migration-shasta.png)
 
     3. Be sure to grab the ECommerce contracts address provided by the previous command. You will see it in both base58 and hex formats. We only need hex but you can store both just in case. - Head over to the **src/components/ECommerce/index.js** file in your text editor. - Near the top of the file, you will see a place to post these addresses.
 
