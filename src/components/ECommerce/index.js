@@ -96,6 +96,19 @@ export default class ECommerce extends Component {
       });
   }
 
+  startEventListener() {
+    Utils.contract.buyItem().watch((err, { result }) => {
+      if (err) return console.log("Failed to bind event listener", err);
+
+      if (result) {
+        Swal.fire({
+          title: `${result.name} has been purchased for ${result.price}.`,
+          html:
+            `<p>Seller: ${result.seller}</p>` + `<p>Buyer: ${result.buyer}</p>`,
+          type: "success"
+        });
+      }
+    });
   }
 
   render() {
