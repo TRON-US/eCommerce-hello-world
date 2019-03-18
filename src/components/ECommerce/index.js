@@ -14,6 +14,22 @@ import "./ECommerce.scss";
 export default class ECommerce extends Component {
   constructor(props) {
     super(props);
+
+    this.state = {
+      dataLength: eCommerceData.length,
+      allItems: [],
+      totalItems: 0
+    };
+
+    this.addItem = this.addItem.bind(this);
+    this.buyItem = this.buyItem.bind(this);
+    this.totalItems = this.totalItems.bind(this);
+    this.startEventListener = this.startEventListener.bind(this);
+  }
+
+  componentDidMount() {
+    this.startEventListener();
+  }
   }
 
   render() {
