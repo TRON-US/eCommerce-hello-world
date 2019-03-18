@@ -99,10 +99,14 @@ export default class ECommerce extends Component {
   }
 
   render() {
+    const { allItems, totalItems } = this.state;
     return (
       <div className="eCommerce-component-container">
-        <p>This will be the ECommerce Component </p>
+        <div>Total Items In Store: {totalItems}</div>
+        <div className="eCommerce-item-container">{allItems}</div>
       </div>
     );
   }
 }
+// <p>This will be the ECommerce Component </p>
+// <div className="eCommerce-item-container">{allItems}</div>
