@@ -483,13 +483,15 @@ Now that you have acquainted yourself with the tools, let us get started writing
 Now that we have the smart contract in our application, we can go ahead and compile and migrate it.
 
     1. In the terminal, in the root of our dApp run `tronbox compile --compile-all`
-
        - This command will compile all the contracts you have in your application.
        - You should see an output similar to this:
-         ![contract-compilation](./public/reference-images/contract-compilation.png)
+
+![contract-compilation](./public/reference-images/contract-compilation.png)
 
     2. Now run `tronbox migrate --reset --network shasta` - This tells tronbox to use Shasta network, reset the network, and migrate the contracts onto the network./ - Your output should look similar to this:
-       ![contract-migration](./public/reference-images/contract-migrationshasta.png)
+
+![contract-migration](./public/reference-images/contract-migrationshasta.png)
+
     3. Be sure to grab the ECommerce contracts address provided by the previous command. You will see it in both base58 and hex formats. We only need hex but you can store both just in case. - Head over to the **src/components/ECommerce/index.js** file in your text editor. - Near the top of the file, you will see a place to post these addresses.
 
 ### Linking the Front-End of our dApp to our Smart Contract
