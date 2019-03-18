@@ -9,7 +9,7 @@ import "./App.scss";
 
 const FOUNDATION_ADDRESS = "TWiWt5SEDzaEqS6kE5gandWMNfxR2B5xzg";
 /// Add your contract address here////////////////////////////////
-const contractAddress = "";
+// const contractAddress = "";
 /////////////////////////////////////////////////////////////////
 
 class App extends Component {
@@ -112,7 +112,7 @@ class App extends Component {
       <div>
         <header className="header-container">
           <div className="resource-links-container">
-            <div className="app-title">Shoe-Commerce</div>
+            <div className="app-title">TRX-Kicks</div>
             <a
               className="nav-link"
               href="https://developers.tron.network/docs"

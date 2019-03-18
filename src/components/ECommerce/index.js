@@ -5,12 +5,6 @@ import Utils from "utils";
 import eCommerceData from "./eCommerce-data";
 import "./ECommerce.scss";
 
-/// Add your contract address here////////////////////////////////
-// const contractAddress = "410a69562aa3bfeb43e6b684e3faefe0707a47e7af";
-// base58= TAvFwtg7xdcZuVS3Mnki7bxXkzuW3Hhp8b
-// hex= 410a69562aa3bfeb43e6b684e3faefe0707a47e7af
-/////////////////////////////////////////////////////////////////
-
 export default class ECommerce extends Component {
   constructor(props) {
     super(props);
@@ -95,6 +89,8 @@ export default class ECommerce extends Component {
         });
       });
   }
+
+  buyItem() {}
 
   startEventListener() {
     Utils.contract.buyItem().watch((err, { result }) => {
