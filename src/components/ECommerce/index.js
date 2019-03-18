@@ -78,6 +78,24 @@ export default class ECommerce extends Component {
     return;
   }
 
+  totalItems() {
+    Utils.contract
+      .checkItemsTotal()
+      .then(({ result }) => {
+        Swal.fire({
+          title: `There are ${result.totalItems} in this contract's store.`,
+          type: "success"
+        });
+      })
+      .catch(err => {
+        Swal.fire({
+          title: "Something went wrong in checking the total.",
+          text: err,
+          type: error
+        });
+      });
+  }
+
   }
 
   render() {
