@@ -8,9 +8,6 @@ import TronLinkGuide from "components/TronLinkGuide";
 import "./App.scss";
 
 const FOUNDATION_ADDRESS = "TWiWt5SEDzaEqS6kE5gandWMNfxR2B5xzg";
-/// Add your contract address here////////////////////////////////
-// const contractAddress = "";
-/////////////////////////////////////////////////////////////////
 
 class App extends Component {
   constructor(props) {
@@ -100,7 +97,6 @@ class App extends Component {
     }
 
     Utils.setTronWeb(window.tronWeb);
-    // Utils.setContract(window.tronWeb, contractAddress);
   }
 
   render() {
