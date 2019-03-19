@@ -2,7 +2,7 @@
   "name": "ecommerce-hello-world",
   "version": "1.0.0",
   "description": "",
-  "main": "tronbox-config.js",
+  "main": "tronbox.js",
   "directories": {
     "test": "test"
   },
@@ -24,19 +24,19 @@
   "homepage": "https://github.com/UjwalBattar/eCommerce-hello-world#readme",
   "dependencies": {
     "node-sass": "^4.11.0",
-    "react": "^16.8.1",
-    "react-dom": "^16.8.1",
-    "react-scripts": "^2.1.3",
-    "sweetalert2": "^8.0.6",
-    "tronweb": "^2.1.31"
+    "react": "^16.8.4",
+    "react-dom": "^16.8.4",
+    "react-scripts": "^2.1.8",
+    "sweetalert2": "^8.5.0",
+    "tronweb": "^2.2.9"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
     "babel-polyfill": "^6.26.0",
     "babel-register": "^6.26.0",
-    "move-cli": "^1.2.0",
+    "move-cli": "^1.2.1",
     "rimraf": "^2.6.3",
-    "solc": "^0.4.25"
+    "solc": "^0.5.6"
   },
   "browserslist": [
     ">0.2%",
