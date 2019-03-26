@@ -20,11 +20,11 @@
 - Click on the extension to set up your account:
 
   1. The TronLink popup will require you to create a password. Be sure to store this password as this is the easiest way to access your account. Follow the instructions provided and click on "Continue".
-  2. You should see two options here: first to create a wallet and second to restore a wallet. Once you have created your wallet, you will be able to restore it by using your unique generated mnemonic or you private key. Both of these should be stored securely and privately as these can grant access to you account to anyone who knows them.
-  3. Click on "Create wallet" to create a new wallet.
+  2. You should see two options here: first to create an account and second to restore an account. Once you have created your wallet, you will be able to restore it in the future by using your unique generated mnemonic or you private key. Both of these should be stored securely and privately as these can grant access to you account to anyone who knows them.
+  3. Click on "Create account" to create a new account.
   4. TronLink will prompt you to create an account name. This is an easy way for you to distinguish accounts in your wallet instead of relying on the public key. Click on "Continue" after you have chosen an account name.
   5. You will be presented with a 12 word mnemonic. This is unique to your account and must be stored securely. Continue after you have stored this mnemonic.
-  6. TronLink will now require you to select the words in your mnemonic in the order they were shown (top to bottom, one column at a time left to right).
+  6. TronLink will now require you to select the words in your mnemonic in the order they were shown (left to right and top to bottom, the same order it was displayed to you. As a word of caution, if there are repeated words, start over as it may cause some issues).
   7. And that's it! You have created your TronLink wallet!
 
 - **Though you wallet exists in your browser, it is not yet on the blockchain network.**
@@ -33,16 +33,15 @@
   3. Navigate to [Shasta Test Network](https://www.trongrid.io/shasta/) to learn more about it and get the test TRX.
   4. Scroll to the bottom of the page and you should see the prompt to enter you Test wallet address.
   5. Click on the TronLink extension to view your accounts.
-  6. Navigate to the **Settings** tab in TronLink.
-  7. You will see a section labeled Node selection. The **Mainnet** is the default selection. This is the main TRON network where you can explore and execute real, financially significant transactions after this tutorial!
-  8. Select **Shasta Testnet** located right below the Mainnet selection. This is the test network provided by TRON for us to become familiar with the blockchain infrastructure and test ideas without any financial risk.
-  9. Navigate back to the **Accounts** tab in TronLink. Here, you can switch between accounts. The one in _blue_ is the current account.
-  10. Select and copy the account address below the account name. It will look something like this `TYLDyP6wJUTZ7tzKEDa3Ricicz2kAVtMEc`.
-  11. This public address allows your account to interact with the blockchain. This is how users can send TRX to your account.
-  12. Back on the [Shasta Test Network](https://www.trongrid.io/shasta/) page, paste your account address in the `Test wallet address` and click "Submit".
-  13. you should see "Your request was successfully submitted, please check your wallet." right below the area you posted your account address.
-  14. If you check your account in TronLink, you will see that your account has been sent 10,000 TRX! and you have 5,000 daily bandwidth points (_more on this later_).
-  15. That's it, you are now ready to start interacting with and testing on the Shasta Test Network.
+  6. At the top middle of TronLink, you should see **Mainnet**. The **Mainnet** is the default selection. This is the main TRON network where you can explore and execute real, financially significant transactions after this tutorial!
+  7. If you click on it, you will be able to select **Shasta Testnet** located right below the Mainnet selection. This is the test network provided by TRON for us to become familiar with the blockchain infrastructure and test ideas without any financial risk.
+  8. You should also see your account, by name, in TronLink. Clicking here will allow you to switch between accounts.
+  9. Select and copy the account address below the account name. It will look something like this `TYLDyP6wJUTZ7tzKEDa3Ricicz2kAVtMEc`.
+  10. This public address allows your account to interact with the blockchain. This is how users can send TRX to your account.
+  11. Back on the [Shasta Test Network](https://www.trongrid.io/shasta/) page, paste your account address in the `Test wallet address` and click "Submit".
+  12. you should see "Your request was successfully submitted, please check your wallet." right below the area you posted your account address.
+  13. If you check your account in TronLink, you will see that your account has been sent 10,000 TRX! and you have 5,000 daily bandwidth points (_more on this later_).
+  14. That's it, you are now ready to start interacting with and testing on the Shasta Test Network.
 - You can view the [TronLink code on GitHub](https://github.com/TronLink/TronLink) if you would like to learn more about how it works.
 
 ### NPM
@@ -76,9 +75,9 @@
 2. This file is used to store information you so not want to expose to the world
 3. Open up this file and paste these lines
 
-```
-NODE_PATH='src/'
-PK="enter/paste your private key here"
+```javascript
+NODE_PATH = "src/";
+PK = "enter/paste your private key here";
 ```
 
 3. paste your private key in the `.env` file.
@@ -101,11 +100,10 @@ PK="enter/paste your private key here"
    - If you go back to the browser, you should now see your account address displaying in Hex format.
    - If you would like to see this displayed in Base58 format, uncomment lines 29 to 32 and change the `setState` function on line 33 to look like:
 
-```
+```javascript
 this.setState({
-accountAddress: accountAddressInBase58
+  accountAddress: accountAddressInBase58
 });
-
 ```
 
 - You should now be able to go to the browser and see your address displayed in ASCii format.
@@ -117,7 +115,7 @@ accountAddress: accountAddressInBase58
    - In the browser you should now see the balance of your account in SUN.
    - To view your account balance in TRX, uncomment line 41 and change the `setState` function on line 44 to look like:
 
-```
+```javascript
 this.setState({
   accountBalance: balanceInTRX
 });
@@ -200,7 +198,7 @@ Now that you have acquainted yourself with the tools, let us get started writing
 2. **Name our Contract:**
    - Add this block below version specification.
 
-```
+```solidity
  contract ECommerce {
 
  }
@@ -220,7 +218,7 @@ Now that you have acquainted yourself with the tools, let us get started writing
 
         - A `struct` is how we define new data types in Solidity. As an e-Commerce store, we need items to sell. Let us define an `Item` struct within the ECommerce contract.
 
-        ```
+        ```solidity
         struct Item {
 
             }
@@ -236,7 +234,7 @@ Now that you have acquainted yourself with the tools, let us get started writing
           - `address buyer;` (declare the **buyer** property as type _address_)
         - Your item struct should look like this now:
 
-        ```
+        ```solidity
         struct Item {
             uint id;
             string name;
@@ -259,7 +257,7 @@ Now that you have acquainted yourself with the tools, let us get started writing
           - One approach to address this issue is to add a property "exists" to our Item struct. (`bool exists;`)
           - Our Item struct should now look like this:
 
-                ```
+                ```solidity
                 struct Item {
                     uint id;
                     string name;
@@ -286,7 +284,7 @@ Now that you have acquainted yourself with the tools, let us get started writing
     - Events are specified with an `event` type followed by their name. In parentheses we specify the parameters an event will emit along with datatypes.
     - Add these two events below `totalItems`:
 
-    ```
+    ```solidity
     event Added(uint id, string name, address indexed seller, bool available, bool exists, uint totalItems);
     event Purchased(uint id, string name, address indexed seller, address indexed buyer, bool available);
     ```
@@ -298,7 +296,7 @@ Now that you have acquainted yourself with the tools, let us get started writing
     - We will use a constructor in our contract to ensure that `totalItems` is indeed set to zero when we initialize out contract.
     - Add this below `totalItems`:
 
-    ```
+    ```solidity
     constructor () public {
         totalItems = 0;
     }
@@ -316,7 +314,7 @@ Now that you have acquainted yourself with the tools, let us get started writing
 
     1. **checkItemsTotal** Checks how many items in the store.
 
-       ```
+       ```solidity
          function checkItemsTotal() public view returns (uint total) {
              return totalItems;
          }
@@ -328,7 +326,7 @@ Now that you have acquainted yourself with the tools, let us get started writing
 
     2. **addItem** Allow us to add items to our store.
 
-       ```
+       ```solidity
        function addItem (string _name, uint _price) public {
          }
        ```
@@ -342,7 +340,7 @@ Now that you have acquainted yourself with the tools, let us get started writing
          1. `uint itemId = totalItems;` Creates a unique id for each item based on totalItems in the store.
          2. Below are checks we can add to make sure that the item is not in the `items` mapping, using the exists property of the item, before we assign the same id to another item we add. We are also checking that the name is not empty (by converting the string to bytes and checking length) and the price is greater than 0.
 
-         ```
+         ```solidity
          require(!items[itemId].exists, "An item already exists at this ID.");
          require(bytes(_name).length > 0, "Item name cannot be empty.");
          require(_price > 0, "Price must be greater than zero (0).");
@@ -352,7 +350,7 @@ Now that you have acquainted yourself with the tools, let us get started writing
          3. `address sellerAddress = msg.sender;` Creates a variable `sellerAddress` with type `address` that we set using the `msg.sender` which exists on every every interaction a user has with the contract. This is the public address of the users account.
          4. Add the item to the mapping and assign it to the key `itemId`. This also assigns values to the properties of the Item.
 
-         ```
+         ```solidity
          items[itemId] = Item({
            id: itemId,                             // unique id for the item
            name: _name,                            // name of the item, passed in from the user as a parameter of the function
@@ -370,7 +368,7 @@ Now that you have acquainted yourself with the tools, let us get started writing
     3. **buyItem** allows the purchase an item from our store.
 
 
-        ```
+        ```solidity
         function buyItem(uint _id) public payable returns (bool success, address seller, address buyer) {
           require(items[_id].exists == true, "This item does not exist. Please check the id and try again.");
           require(items[_id].available == true, "This item is no longer available.");
@@ -405,7 +403,7 @@ Now that you have acquainted yourself with the tools, let us get started writing
         8. Returns with the specified return parameters.
 
     4. **_handlePurchase** executes the actual purchase of the item.
-        ```
+        ```solidity
         function _handlePurchase(uint _id, address _buyerAddress, uint _value) internal {
           items[_id].available = false;
           items[_id].buyer = _buyerAddress;
@@ -423,7 +421,7 @@ Now that you have acquainted yourself with the tools, let us get started writing
 
    1. Add this function just for testing purposes in Remix.
 
-      ```
+      ```solidity
       function fetchItem(uint8 _id) public view returns (uint itemId, string name, uint price, bool available, address seller, address buyer, bool exists) {
         return (items[_id].id, items[_id].name, items[_id].price, items[_id].available, items[_id].seller, items[_id].buyer, items[_id].exists);
       }
@@ -502,13 +500,13 @@ Now that we have the smart contract in our application, we can go ahead and comp
 1. Comment in all the commented out code.
 2. Replace line 221 (`<p>This will be the ECommerce Component </p>`) with:
 
-   ```
-     <div className="eCommerce-component-dash">
-        <div>Total Items In Store: {totalItems}</div>
-        <button onClick={this.checkItemsTotal}>Total Contract Items</button>
-        <button onClick={this.addItem}>Add Item</button>
-     </div>
-     <div className="eCommerce-item-container">{allItems}</div>
+   ```html
+   <div className="eCommerce-component-dash">
+     <div>Total Items In Store: {totalItems}</div>
+     <button onClick="{this.checkItemsTotal}">Total Contract Items</button>
+     <button onClick="{this.addItem}">Add Item</button>
+   </div>
+   <div className="eCommerce-item-container">{allItems}</div>
    ```
 
 #### Walkthrough of the Front-End
