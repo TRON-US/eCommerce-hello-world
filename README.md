@@ -196,18 +196,19 @@ Now that you have acquainted yourself with the tools, let us get started writing
    - We can fix this by adding this to the first line of our contract: `pragma solidity ^0.4.23;`. The keyword `pragma` is used to specify which version of Solidity is used in our source file. The version specified here must be less than the version specified in the compile tab or the version used in the Compiler.
 
 2. **Name our Contract:**
+
    - Add this block below version specification.
 
-```solidity
- contract ECommerce {
+   ```solidity
+    contract ECommerce {
 
- }
-```
+    }
+   ```
 
-    - A `contract` is the type specification of `ECommerce` smart contract.
-    - All of the contract methods will go between the two curly braces (`{}`).
-    - On the right you should see a green box with `ECommerce` in it.
-    - _Green_: You are on the right track! Keep going! (_Yellow_: Something is up. May be worth looking into, may be nothing. _Red_: Uh-oh! We need to go back and fix something. This is not going to compile.)
+   - A `contract` is the type specification of `ECommerce` smart contract.
+   - All of the contract methods will go between the two curly braces (`{}`).
+   - On the right you should see a green box with `ECommerce` in it.
+   - _Green_: You are on the right track! Keep going! (_Yellow_: Something is up. May be worth looking into, may be nothing. _Red_: Uh-oh! We need to go back and fix something. This is not going to compile.)
 
 #### Everything below this will be done within the ECommerce contract.
 
@@ -257,19 +258,19 @@ Now that you have acquainted yourself with the tools, let us get started writing
           - One approach to address this issue is to add a property "exists" to our Item struct. (`bool exists;`)
           - Our Item struct should now look like this:
 
-                ```solidity
-                struct Item {
-                    uint id;
-                    string name;
-                    uint price;
-                    bool available;
-                    address seller;
-                    address buyer;
-                    bool exists;
-                }
-                ```
+          ```solidity
+          struct Item {
+              uint id;
+              string name;
+              uint price;
+              bool available;
+              address seller;
+              address buyer;
+              bool exists;
+          }
+          ```
 
-            - Now, if we try to access an Item in the struct we can be sure by accessing the exists property of the Item struct and checking if it is `true`. (`items[id].exists == true`)
+          - Now, if we try to access an Item in the struct we can be sure by accessing the exists property of the Item struct and checking if it is `true`. (`items[id].exists == true`)
 
     3.  Total items
 
