@@ -28,7 +28,7 @@
     "react-dom": "^16.8.4",
     "react-scripts": "^2.1.8",
     "sweetalert2": "^8.5.0",
-    "tronweb": "^2.2.9"
+    "tronweb": "^2.3.4"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
@@ -36,7 +36,7 @@
     "babel-register": "^6.26.0",
     "move-cli": "^1.2.1",
     "rimraf": "^2.6.3",
-    "solc": "^0.5.6"
+    "solc": "^0.4.25"
   },
   "browserslist": [
     ">0.2%",
