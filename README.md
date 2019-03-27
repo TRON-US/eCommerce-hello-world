@@ -69,7 +69,7 @@
 1. Tour
 2. Something
 
-### Set up dotenv file
+### Set up dotenv file **IMPORTANT**
 
 1. In the root directory of your project, create a file called `.env`
 2. This file is used to store information you so not want to expose to the world
@@ -77,7 +77,7 @@
 
 ```javascript
 NODE_PATH = "src/";
-PK = "enter/paste your private key here";
+PK = "enter or paste your private key here";
 ```
 
 3. paste your private key in the `.env` file.
@@ -177,8 +177,8 @@ Now that you have acquainted yourself with the tools, let us get started writing
    - You should see a pop up to alter the name of the default "Untitled.sol". You may call your file anything but note that it is a general rule of thumb to name it after the contract defined in it. Let us call this file "ECommerce.sol" as our contract will be called "ECommerce".
    - On successfully submitting the name, you should see your new, blank file (browser/ECommerce.sol) displayed in the **Editor**.
 2. Compile tab:
-   - In the dropdown that should currently be displaying **Select new compiler version**, scroll down the long list and select "0.4.25+commit.59dbf8f1". Currently, the max compiler version compatible with TRON is 0.4.25.
-   - Above the dropdown, it should display "Current version:0.4.25+commit.59dbf8f1.Emscripten.clang"
+   - In the dropdown that should currently be displaying **Select new compiler version**, scroll down the long list and select "0.4.24+commit.e67f0147". Currently, the max compiler version compatible with TRON is 0.4.24.
+   - Above the dropdown, it should display "Current version:0.4.24+commit.e67f0147.Emscripten.clang"
    - Below the dropdown, we will also check the "Auto compile" box. This will recompile our Smart Contract on changes.
 3. Run tab:
    - The Environment should be JavaScript VM
@@ -192,7 +192,7 @@ Now that you have acquainted yourself with the tools, let us get started writing
 1. **Solidity Compiler Version:**
 
    - You should be seeing a yellow warning box to the right with this message: browser/ECommerce.sol:1:1: Warning: Source file does not specify required compiler version! Consider adding "pragma solidity ^0.5.1;"
-   - If you have followed the instructions so far, you should have se the current compiler version to "0.4.25+commit.59dbf8f1". The error is being caused because our file is empty and does not specify the required compiler version. In our application, this version is specified in the `package.json` file as `"solc": "^0.4.25"`.
+   - If you have followed the instructions so far, you should have se the current compiler version to "0.4.24+commit.e67f0147". The error is being caused because our file is empty and does not specify the required compiler version. In our application, this version is specified in the `package.json` file as `"solc": "^0.4.24"`.
    - We can fix this by adding this to the first line of our contract: `pragma solidity ^0.4.23;`. The keyword `pragma` is used to specify which version of Solidity is used in our source file. The version specified here must be less than the version specified in the compile tab or the version used in the Compiler.
 
 2. **Name our Contract:**
@@ -286,8 +286,10 @@ Now that you have acquainted yourself with the tools, let us get started writing
     - Add these two events below `totalItems`:
 
     ```solidity
-    event Added(uint id, string name, address indexed seller, bool available, bool exists, uint totalItems);
-    event Purchased(uint id, string name, address indexed seller, address indexed buyer, bool available);
+    event Purchased(uint id, string name, address indexed seller, address indexed buyer, uint price);
+    event Added(uint id, string name, uint price, address indexed seller, bool available, bool exists);
+    event Total(uint totalItems);
+    event Availability(bool available);
     ```
 
 5.  **Constructor**
@@ -316,19 +318,19 @@ Now that you have acquainted yourself with the tools, let us get started writing
     1. **checkItemsTotal** Checks how many items in the store.
 
        ```solidity
-         function checkItemsTotal() public view returns (uint total) {
+         function checkItemsTotal() public returns (uint total) {
+             emit Total(totalItems);
              return totalItems;
          }
        ```
 
        - `public` anyone can call this.
-       - `view` reads from contract but does not alter state
        - `return` a uint, `totalItems` in the store/contract
 
     2. **addItem** Allow us to add items to our store.
 
        ```solidity
-       function addItem (string _name, uint _price) public {
+       function addItem (string _name, uint _price) public returns (bool success, uint id, string name, uint price, address seller, bool available) {
          }
        ```
 
@@ -364,13 +366,24 @@ Now that you have acquainted yourself with the tools, let us get started writing
          ```
 
          5. `totalItems += 1;` updates the total items variable by one when we add the item.
-         6. `emit Added(items[itemId].id, items[itemId].name, items[itemId].seller, items[itemId].available, items[itemId].exists, totalItems);` emits the `Added` event upon successful adding of an item.
+         6. `emit Added(items[itemId].id, items[itemId].name, items[itemId].price, items[itemId].seller, items[itemId].available, items[itemId].exists);` emits the `Added` event upon successful adding of an item.
+         7. `return (true, items[itemId].id, items[itemId].name, items[itemId].price, items[itemId].seller, items[itemId].available);` will return values that we can use on the frontend.
 
-    3. **buyItem** allows the purchase an item from our store.
+    3. **checkItem** allows the check an item from our contract before purchasing.
+        ```solidity
+        function checkItem(uint _id) public returns (uint itemId, string name, uint price, bool available,  address seller, address buyer, bool exists) {
+          emit Availability(items[_id].available);
+          return (items[_id].id, items[_id].name, items[_id].price, items[_id].available, items[_id].seller, items[_id].buyer, items[_id].exists);
+        }
+        ```
+        1. Emits the `Availability` event.
+        2. Returns specified values for our use.
+
+    4. **buyItem** allows the purchase an item from our store.
 
 
         ```solidity
-        function buyItem(uint _id) public payable returns (bool success, address seller, address buyer) {
+        function buyItem(uint _id) public payable returns (bool success, uint id, string name, address  seller, address  buyer, uint price) {
           require(items[_id].exists == true, "This item does not exist. Please check the id and try again.");
           require(items[_id].available == true, "This item is no longer available.");
           require(items[_id].seller != 0, "This item has no seller");
@@ -381,9 +394,9 @@ Now that you have acquainted yourself with the tools, let us get started writing
 
           _handlePurchase(_id, _buyerAddress, msg.value);
 
-          emit Purchased(_id, items[_id].name, items[_id].seller, items[_id].buyer, items[_id].available);
+          emit Purchased(_id, items[_id].name, items[_id].seller, items[_id].buyer, items[_id].price);
 
-          return (true, items[_id].seller, items[_id].buyer);
+          return (true, _id, items[_id].name, items[_id].seller, items[_id].buyer, items[_id].price);
 
         }
 
@@ -403,7 +416,7 @@ Now that you have acquainted yourself with the tools, let us get started writing
         7. Emits the `Purchased` event.
         8. Returns with the specified return parameters.
 
-    4. **_handlePurchase** executes the actual purchase of the item.
+    5. **_handlePurchase** executes the actual purchase of the item.
         ```solidity
         function _handlePurchase(uint _id, address _buyerAddress, uint _value) internal {
           items[_id].available = false;
@@ -420,36 +433,26 @@ Now that you have acquainted yourself with the tools, let us get started writing
 
 7. **Testing our contract in Remix**
 
-   1. Add this function just for testing purposes in Remix.
-
-      ```solidity
-      function fetchItem(uint8 _id) public view returns (uint itemId, string name, uint price, bool available, address seller, address buyer, bool exists) {
-        return (items[_id].id, items[_id].name, items[_id].price, items[_id].available, items[_id].seller, items[_id].buyer, items[_id].exists);
-      }
-      ```
-
-      - This function will allow us to call the items mapping to to retrieve information about an item by its id (a number greater than or equal to 0 and less than `totalItems`).
-
-   2. Go to the run tab on the right side. (Refer above for walkthrough of Remix)
+   1. Go to the run tab on the right side. (Refer above for walkthrough of Remix)
 
       - Environment: should be set to JavaScriptVM.
       - Account: 5 default test accounts with 100 test Ether provided by Remix.
       - Gas limit: 3000000 (wei).
       - Value: 0 , wei.
 
-   3. ECommerce should be selected in the next block right above the Deploy button.
+   2. ECommerce should be selected in the next block right above the Deploy button.
 
       - Click the Deploy button.
       - You should see something similar to "ECommerce at 0xdc0...46222(memory)" in the deployed contracts block.
       - Click on this to see the contracts functions for us to test.
 
-   4. Play around with each of the functions here to get a better understanding of what our contract is doing.
+   3. Play around with each of the functions here to get a better understanding of what our contract is doing.
 
       - Check how many items are in the store. (`checkItemsTotal`)
       - Add an item to the store. (`addItem`)
-      - Retrieve information about the item(s) you added using their id. (`fetchItem`) This use an id of 0 if none is provided.
+      - Retrieve information about the item(s) you added using their id. (`checkItem`) This use an id of 0 if none is provided.
       - When using the `buyItem` function, be sure to change the Value above to match the **price of the item** which has been converted to wei. You can choose to change the denomination of the value or use the accurate amount in wei.
-      - Use `fetchItem` and check that the values of the bought items have changed.
+      - Use `checkItem` and check that the values of the bought items have changed.
       - Change the accounts above (between the 5 provided) and see the balances change on purchase.
       - Click the **Debugger** tab or the **Debug** button next to a transaction in the terminal and step through the functions.
 
@@ -485,21 +488,26 @@ Now that we have the smart contract in our application, we can go ahead and comp
    - Change line 1(`// var MyContract = artifacts.require("./MyContract.sol");`) to be `var ECommerce = artifacts.require("./ECommerce.sol");`.
    - Change line 4(`// deployer.deploy(MyContract);`) to be `deployer.deploy(ECommerce);`.
 2. In the terminal, in the root of our dApp run `tronbox compile --compile-all`
+   - the `--compile-all` flag calls all contracts to be compiled/recompiled.
    - This command will compile all the contracts you have in your application.
    - You should see an output similar to this:
 
 ![contract-compilation](./public/reference-images/contract-compilation.png)
 
-3. Now run `tronbox migrate --reset --network shasta` - This tells tronbox to use Shasta network, reset the network, and migrate the contracts onto the network./ - Your output should look similar to this:
+3. Now run `tronbox migrate --reset --network shasta` - This tells tronbox to use Shasta network, reset the network, and migrate the contracts onto the network.
+   - If this is the first time migrating, you do not need to use the `--reset` flag.
+   - Your output should look similar to this:
 
 ![contract-migration](./public/reference-images/contract-migration-shasta.png)
 
-4. Be sure to grab the ECommerce contracts address provided by the previous command. You will see it in both base58 and hex formats. We only need hex but you can store both just in case. - Head over to the **src/components/ECommerce/index.js** file in your text editor. - Near the top of the file, you will see a place to post these addresses.
+4. Be sure to grab the ECommerce contracts address provided by the previous command. You will see it in both base58 and hex formats. We only need one but you can store both just in case.
+   - Head over to the **src/components/ECommerce/index.js** file in your text editor.
+   - Near the top of the file, you will see a place to paste these addresses.
 
 ### Linking the Front-End of our dApp to our Smart Contract
 
 1. Comment in all the commented out code.
-2. Replace line 221 (`<p>This will be the ECommerce Component </p>`) with:
+2. Replace line 171 (`<p>This will be the ECommerce Component </p>`) with:
 
    ```html
    <div className="eCommerce-component-dash">
@@ -510,8 +518,245 @@ Now that we have the smart contract in our application, we can go ahead and comp
    <div className="eCommerce-item-container">{allItems}</div>
    ```
 
+   This also at the very bottom of the file.
+
 #### Walkthrough of the Front-End
+
+1. Lines 1 - 6:
+   - We are importing React as this is a react application. Sweetalert will allow us to display custom alerts.
+   - The utils file has functions to set tronweb and set the contract address.
+   - eCommerceData is where we have stored our items in json format.
+
+```JavaScript
+import React, { Component } from "react";
+import Swal from "sweetalert2";
+
+import Utils from "utils";
+import eCommerceData from "./eCommerce-data"; // items in json format
+import "./ECommerce.scss"; //styling
+```
+
+2. Lines 8 - 12
+
+   - This is where you can store your contract address which will be used in our application.
+
+```JavaScript
+/// Add your contract address here////////////////////////////////å
+const contractAddress = "Your contract address here";
+// base85v = "TLiXUGoitF1qPM6Z2c8g6fygiawoEyLXWL"
+// hex = "4175e28fbf92bcd5afae462bb93a217f1ef3b9b2af"
+/////////////////////////////////////////////////////////////////
+```
+
+3. Line 14 is standard React to implement a class component. In our case the class is ECommerce.
+4. Lines 15 - 28
+   - This is the constructor for our eCommerce class.
+   - This is where we store component state and bind class functions to maintain context.
+
+```JavaScript
+constructor(props) {
+  super(props);
+
+  this.state = {
+    dataLength: eCommerceData.length,
+    allItems: [],
+    totalItems: 0
+  };
+
+  this.addItem = this.addItem.bind(this);
+  this.buyItem = this.buyItem.bind(this);
+  this.checkItem = this.checkItem.bind(this);
+  this.checkItemsTotal = this.checkItemsTotal.bind(this);
+}
+```
+
+5. Lines 30 - 32
+   - When component did mount, set tronweb and the contract from the address we provided above.
+
+```JavaScript
+async componentDidMount() {
+  await Utils.setContract(window.tronWeb, contractAddress);
+}
+```
+
+6. Lines 34 - 96 **addItem function**
+   - We first extrapolate variables from the component state. and check to make sure that our json data has more items to add.
+   - We create a price and assign it an id and random price.
+   - We create the html for this item to be displayed in the browsed and push to the component state's items array.
+   - We then call out contract's `addItem` function to add the item to the store. The return values from the return statements in our contract are then used to display an alert in our browser using sweetalert.
+   - Finally we increment the total items in our component state.
+
+```JavaScript
+addItem() {
+  const { totalItems, dataLength, allItems } = this.state;
+
+  if (totalItems >= dataLength) {
+    Swal({
+      title: "No more items in data to add.",
+      type: "error"
+    });
+    return;
+  }
+
+  let item = eCommerceData[totalItems];
+  item.price = parseFloat(Math.random() * 10).toFixed(0);
+  item.id = totalItems;
+
+  allItems.push(
+    <div className="eCommerce-item" key={item.id}>
+      <img className="item-image" src={item.image} alt={item.name} />
+      <div className="item-name">{item.name}</div>
+      <div className="price-buy-container">
+        <div className="item-price">{item.price} TRX</div>
+        <button
+          className="buy-button"
+          onClick={() => this.buyItem(item.id, item.price)}
+        >
+          Buy
+        </button>
+        <button
+          className="buy-button"
+          onClick={() => this.checkItem(item.id)}
+        >
+          Check
+        </button>
+      </div>
+    </div>
+  );
+
+  Utils.contract
+    .addItem(item.name, item.price)
+    .send({
+      shouldPollResponse: true // waits for confirmation that it is on the blockchain
+    })
+    .then(res => {
+      console.log(res);
+      Swal.fire({
+        title: `${res.name} was added at index ${res.id}`,
+        html:
+          `<p>Price: ${res.price / 1000000} TRX (${res.price} SUN)</p>` +
+          `<p>Seller: ${res.seller}</p>` +
+          `<p>Available: ${res.available}</p>`,
+        type: "success"
+      });
+    })
+    .catch(err => {
+      Swal.fire({
+        title: "Unable to add item.",
+        type: "error"
+      });
+    });
+
+  this.setState({
+    totalItems: totalItems + 1
+  });
+  return;
+}
+```
+
+7. Lines 98 - 117
+   - We call our contracts `checkItemsTotal` function and use the return values to display an alert in the browser. This will show our users the number of items in the store.
+
+```JavaScript
+checkItemsTotal() {
+  Utils.contract
+    .checkItemsTotal()
+    .send({
+      shouldPollResponse: true, // waits for confirmation that it is on the blockchain
+    })
+    .then(res => {
+      console.log(res);
+      Swal.fire({
+        title: `There are ${res.total} in this contract's store.`,
+        type: "success"
+      });
+    })
+    .catch(err => {
+      Swal.fire({
+        title: "Unable to check the total items.",
+        type: "error"
+      });
+    });
+}
+```
+
+8. Lines 119 - 137
+   - We check the item at a given id to see its details in the contract and once again use the return values to display a useful alert for our user.
+
+```JavaScript
+checkItem(id) {
+  Utils.contract
+    .checkItem(id)
+    .send({
+      shouldPollResponse: true, // waits for confirmation that it is on the blockchain
+    })
+    .then(res => {
+      Swal.fire({
+        title: `Available: ${res.available}.`,
+        type: res.available ? "success" : "error"
+      });
+    })
+    .catch(err => {
+      Swal.fire({
+        title: "Unable to check item.",
+        type: "error"
+      });
+    });
+}
+```
+
+9. Lines 139 - 160
+   - We buy the item from our contract.
+   - Notice that the call value is the price of the item multiplied by 1000000 to convert to SUN.
+
+```JavaScript
+buyItem(id, price) {
+  Utils.contract
+    .buyItem(id)
+    .send({
+      shouldPollResponse: true, // waits for confirmation that it is on the blockchain
+      callValue: price * 1000000 // Amount of SUN we send in this call
+    })
+    .then(res => {
+      Swal.fire({
+        title: `You have purchased ${res.name} for ${res.price /
+          1000000} TRX (${res.price} SUN).`,
+        html: `<p>Seller: ${res.seller}</p>` + `<p>Buyer: ${res.buyer}</p>`,
+        type: "success"
+      });
+    })
+    .catch(err => {
+      Swal.fire({
+        title: "Unable to purchase item.",
+        type: "error"
+      });
+    });
+}
+
+```
+
+10. Lines 162 - 174
+    - Our component's render function which shows what to display in the browser.
+    - Line 163: Extrapolate variables form component state.
+    - Line 168: Button to check the total items in our contract.
+    - Line 169: Button to add items.
+    - Line 171: Where all our items will be displayed.
 
 ### Interacting with dApp and Smart-Contract from the Browser
 
 - In the terminal, run `npm run start` and you should see the application in the browser.
+- Feel free to click around and watch your application interact with your contract live on the Shasta network!
+- Launching your application on to the internet is nothing different than launching any other React application. You can easily find resources online to help you through this.
+- **CONGRATULATIONS! You have successfully built a dApp and launched a smart contract on the Shasta network! you are well on your way to become a successful dApp developer!**
+
+### THINGS TO CONSIDER / EXPLORE:
+
+    - Here are some topics for you to explore on your own to make you a better dApp developer.
+    - If you refresh your page, your component will erase all the items but they will still exist in the contract. Why is this the case?
+    - Is the numeric id the safest way to interact with items?
+    - What other are some security risks associated with our contract? how can we solve them?
+    - Feel free to raise issues in the GitHub Repo or leave comments in the Medium article if you can think of more ways to improve this!
+
+## Thank you for following this tutorial! Be on the look out for more educational resources from us in the future! See you around the network. TRON to the moon!
+
+Be sure to follow TRON on our social media platforms and join our discord and telegram channels to join and engage with our ever growing and passionate community.
