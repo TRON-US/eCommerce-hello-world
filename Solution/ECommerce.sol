@@ -56,7 +56,7 @@ contract ECommerce {
         return (true, items[itemId].id, items[itemId].name, items[itemId].price, items[itemId].seller, items[itemId].available);
     }
 
-    function checkItem(uint8 _id) public returns (uint itemId, string name, uint price, bool available,  address seller, address buyer, bool exists){
+    function checkItem(uint _id) public returns (uint itemId, string name, uint price, bool available,  address seller, address buyer, bool exists) {
       emit Availability(items[_id].available);
       return (items[_id].id, items[_id].name, items[_id].price, items[_id].available, items[_id].seller, items[_id].buyer, items[_id].exists);
     }
