@@ -192,7 +192,7 @@ Now that you have acquainted yourself with the tools, let us get started writing
 1. **Solidity Compiler Version:**
 
    - You should be seeing a yellow warning box to the right with this message: browser/ECommerce.sol:1:1: Warning: Source file does not specify required compiler version! Consider adding "pragma solidity ^0.5.1;"
-   - If you have followed the instructions so far, you should have se the current compiler version to "0.4.24+commit.e67f0147". The error is being caused because our file is empty and does not specify the required compiler version. In our application, this version is specified in the `package.json` file as `"solc": "^0.4.24"`.
+   - If you have followed the instructions so far, you should have set the current compiler version to "0.4.24+commit.e67f0147". The error is being caused because our file is empty and does not specify the required compiler version. In our application, this version is specified in the `package.json` file as `"solc": "^0.4.24"`.
    - We can fix this by adding this to the first line of our contract: `pragma solidity ^0.4.23;`. The keyword `pragma` is used to specify which version of Solidity is used in our source file. The version specified here must be less than the version specified in the compile tab or the version used in the Compiler.
 
 2. **Name our Contract:**
@@ -751,11 +751,11 @@ buyItem(id, price) {
 
 ### THINGS TO CONSIDER / EXPLORE:
 
-    - Here are some topics for you to explore on your own to make you a better dApp developer.
-    - If you refresh your page, your component will erase all the items but they will still exist in the contract. Why is this the case?
-    - Is the numeric id the safest way to interact with items?
-    - What other are some security risks associated with our contract? how can we solve them?
-    - Feel free to raise issues in the GitHub Repo or leave comments in the Medium article if you can think of more ways to improve this!
+- Here are some topics for you to explore on your own to make you a better dApp developer.
+- If you refresh your page, your component will erase all the items but they will still exist in the contract. Why is this the case?
+- Is the numeric id the safest way to interact with items?
+- What other are some security risks associated with our contract? how can we solve them?
+- Feel free to raise issues in the GitHub Repo or leave comments in the Medium article if you can think of more ways to improve this!
 
 ## Thank you for following this tutorial! Be on the look out for more educational resources from us in the future! See you around the network. TRON to the moon!
 
