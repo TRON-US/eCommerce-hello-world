@@ -1,14 +1,14 @@
 import React, { Component } from "react";
 import Swal from "sweetalert2";
 
-import Utils from "utils";
+import Utils from "../../utils";
 import eCommerceData from "./eCommerce-data";
 import "./ECommerce.scss";
 
-/// Add your contract address here////////////////////////////////
-// const contractAddress = "411496a93f7a5315b5c6682c34891704fbd067e0c9";
-// base85v = "TBr511mcvfqosnyKdYFxqbVfTvRCdHUjUs"
-// hex = "411496a93f7a5315b5c6682c34891704fbd067e0c9"
+/// Add your contract address here////////////////////////////////å
+const contractAddress = "4175e28fbf92bcd5afae462bb93a217f1ef3b9b2af";
+// base85v = "TLiXUGoitF1qPM6Z2c8g6fygiawoEyLXWL"
+// hex = "4175e28fbf92bcd5afae462bb93a217f1ef3b9b2af"
 /////////////////////////////////////////////////////////////////
 
 export default class ECommerce extends Component {
@@ -75,22 +75,46 @@ export default class ECommerce extends Component {
     });
   }
 
-  checkItemsTotal() {
+  async checkItemsTotal() {
     Utils.contract.checkItemsTotal().send({
       callValue: 0
     });
+
+    let checkTotal = await Utils.contract.Total().watch((err, { result }) => {
+      if (err) return console.log("Failed to bind event listener", err);
+      if (result) {
+        Swal.fire({
+          title: `This contract has ${result.totalItems} items.`,
+          type: "success"
+        });
+        checkTotal.stop();
+      }
+    });
   }
 
-  checkItem(id) {
+  async checkItem(id) {
     Utils.contract.checkItem(id).send({
       callValue: 0
     });
+
+    let checkAvailability = await Utils.contract
+      .Availability()
+      .watch((err, { result }) => {
+        if (err) return console.log("Failed to bind event listener", err);
+        if (result) {
+          Swal.fire({
+            title: `Available: ${result.available}.`,
+            type: result.available ? "success" : "error"
+          });
+          checkAvailability.stop();
+        }
+      });
   }
 
   buyItem(id, price) {
     Utils.contract.buyItem(id).send({
       shouldPollResponse: true,
-      callValue: price * 1000000
+      callValue: price * 1000000 // converted to SUN
     });
   }
 
@@ -117,26 +141,6 @@ export default class ECommerce extends Component {
             `<p>Added: ${result.exists}</p>` +
             `<p>Available: ${result.available}</p>`,
           type: "success"
-        });
-      }
-    });
-
-    Utils.contract.Total().watch((err, { result }) => {
-      if (err) return console.log("Failed to bind event listener", err);
-      if (result) {
-        Swal.fire({
-          title: `This contract has ${result.totalItems} items.`,
-          type: "success"
-        });
-      }
-    });
-
-    Utils.contract.Availability().watch((err, { result }) => {
-      if (err) return console.log("Failed to bind event listener", err);
-      if (result) {
-        Swal.fire({
-          title: `Available: ${result.available}.`,
-          type: result.available ? "success" : "error"
         });
       }
     });
