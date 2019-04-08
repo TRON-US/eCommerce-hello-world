@@ -19,7 +19,7 @@
 - Once you have installed the TronLink extension, you should see it in the top right of your Chrome browser along with any other extensions you may have
 - Click on the extension to set up your account:
 
-  1. The TronLink popup will require you to create a password. Be sure to store this password as this is the easiest way to access your account. Follow the instructions provided and click on "Continue".
+  1. The TronLink popup will require you to create a password. Be sure to store this password as this is the easiest way to access TronLink. Follow the instructions provided and click on "Continue".
   2. You should see two options here: first to create an account and second to restore an account. Once you have created your wallet, you will be able to restore it in the future by using your unique generated mnemonic or you private key. Both of these should be stored securely and privately as these can grant access to you account to anyone who knows them.
   3. Click on "Create account" to create a new account.
   4. TronLink will prompt you to create an account name. This is an easy way for you to distinguish accounts in your wallet instead of relying on the public key. Click on "Continue" after you have chosen an account name.
@@ -33,9 +33,9 @@
   3. Navigate to [Shasta Test Network](https://www.trongrid.io/shasta/) to learn more about it and get the test TRX.
   4. Scroll to the bottom of the page and you should see the prompt to enter you Test wallet address.
   5. Click on the TronLink extension to view your accounts.
-  6. At the top middle of TronLink, you should see **Mainnet**. The **Mainnet** is the default selection. This is the main TRON network where you can explore and execute real, financially significant transactions after this tutorial!
-  7. If you click on it, you will be able to select **Shasta Testnet** located right below the Mainnet selection. This is the test network provided by TRON for us to become familiar with the blockchain infrastructure and test ideas without any financial risk.
-  8. You should also see your account, by name, in TronLink. Clicking here will allow you to switch between accounts.
+  6. Click on the settings gear icon at the top right of TronLink. The first options shold say _"Switch node"_. **Mainnet** is the default selection. This is the main TRON network where you can explore and execute real, financially significant transactions after this tutorial!
+  7. If you click on it, you will be able to select **Shasta Testnet** located right below the Mainnet selection. This is the test network provided by TRON for us to become familiar with the blockchain infrastructure and test ideas without any financial risk. After selecting Shasta, exit back to the main screen of TronLink.
+  8. You should also see your account, by name, in TronLink. Clicking here will open a tab that will allow you to switch between accounts, create new accuonts or restore accounts.
   9. Select and copy the account address below the account name. It will look something like this `TYLDyP6wJUTZ7tzKEDa3Ricicz2kAVtMEc`.
   10. This public address allows your account to interact with the blockchain. This is how users can send TRX to your account.
   11. Back on the [Shasta Test Network](https://www.trongrid.io/shasta/) page, paste your account address in the `Test wallet address` and click "Submit".
@@ -46,7 +46,7 @@
 
 ### NPM
 
-- Make sure you have NPM installed. You can install it by following instructions here: [install NPM](https://www.npmjs.com/get-npm).
+- Make sure you have NPM installed. You can install it by following instructions here: [install NPM](https://www.npmjs.com/get-npm). using NVM (Node Version Manager) is recommended, and directions can be found [here](https://medium.com/@Joachim8675309/installing-node-js-with-nvm-4dc469c977d9).
 
 ### TronBox
 
@@ -76,7 +76,6 @@
 3. Open up this file and paste these lines
 
 ```javascript
-NODE_PATH = "src/";
 PK = "enter or paste your private key here";
 ```
 
@@ -520,6 +519,8 @@ Now that we have the smart contract in our application, we can go ahead and comp
 
    This also at the very bottom of the file.
 
+3. If you need a reference to the code at any time, you can find the solution in [Solution/ECommerce-without-events.js](https://github.com/UjwalBattar/eCommerce-hello-world/blob/master/Solution/ECommerce-without-events.js)
+
 #### Walkthrough of the Front-End
 
 1. Lines 1 - 6:
@@ -531,7 +532,7 @@ Now that we have the smart contract in our application, we can go ahead and comp
 import React, { Component } from "react";
 import Swal from "sweetalert2";
 
-import Utils from "utils";
+import Utils from "../../utils";
 import eCommerceData from "./eCommerce-data"; // items in json format
 import "./ECommerce.scss"; //styling
 ```
@@ -548,8 +549,9 @@ const contractAddress = "Your contract address here";
 /////////////////////////////////////////////////////////////////
 ```
 
-3. Line 14 is standard React to implement a class component. In our case the class is ECommerce.
-4. Lines 15 - 28
+3. Line 15 is standard React to implement a class component. In our case the class is ECommerce.
+
+4. Lines 16 - 28
    - This is the constructor for our eCommerce class.
    - This is where we store component state and bind class functions to maintain context.
 
@@ -579,7 +581,7 @@ async componentDidMount() {
 }
 ```
 
-6. Lines 34 - 96 **addItem function**
+6. Lines 34 - 97 **addItem function**
    - We first extrapolate variables from the component state. and check to make sure that our json data has more items to add.
    - We create a price and assign it an id and random price.
    - We create the html for this item to be displayed in the browsed and push to the component state's items array.
@@ -627,10 +629,9 @@ addItem() {
   Utils.contract
     .addItem(item.name, item.price)
     .send({
-      shouldPollResponse: true // waits for confirmation that it is on the blockchain
+      shouldPollResponse: true
     })
     .then(res => {
-      console.log(res);
       Swal.fire({
         title: `${res.name} was added at index ${res.id}`,
         html:
@@ -641,6 +642,7 @@ addItem() {
       });
     })
     .catch(err => {
+      console.log(err);
       Swal.fire({
         title: "Unable to add item.",
         type: "error"
@@ -650,11 +652,10 @@ addItem() {
   this.setState({
     totalItems: totalItems + 1
   });
-  return;
 }
 ```
 
-7. Lines 98 - 117
+7. Lines 99 - 118
    - We call our contracts `checkItemsTotal` function and use the return values to display an alert in the browser. This will show our users the number of items in the store.
 
 ```JavaScript
@@ -662,25 +663,25 @@ checkItemsTotal() {
   Utils.contract
     .checkItemsTotal()
     .send({
-      shouldPollResponse: true, // waits for confirmation that it is on the blockchain
+      callValue: 0
     })
     .then(res => {
-      console.log(res);
       Swal.fire({
         title: `There are ${res.total} in this contract's store.`,
         type: "success"
       });
     })
     .catch(err => {
+      console.log(err);
       Swal.fire({
-        title: "Unable to check the total items.",
+        title: "Something went wrong in checking the total.",
         type: "error"
       });
     });
 }
 ```
 
-8. Lines 119 - 137
+8. Lines 120 - 140
    - We check the item at a given id to see its details in the contract and once again use the return values to display a useful alert for our user.
 
 ```JavaScript
@@ -688,7 +689,8 @@ checkItem(id) {
   Utils.contract
     .checkItem(id)
     .send({
-      shouldPollResponse: true, // waits for confirmation that it is on the blockchain
+      shouldPollResponse: true,
+      callValue: 0
     })
     .then(res => {
       Swal.fire({
@@ -697,6 +699,7 @@ checkItem(id) {
       });
     })
     .catch(err => {
+      console.log(err);
       Swal.fire({
         title: "Unable to check item.",
         type: "error"
@@ -705,7 +708,7 @@ checkItem(id) {
 }
 ```
 
-9. Lines 139 - 160
+9. Lines 142 - 164
    - We buy the item from our contract.
    - Notice that the call value is the price of the item multiplied by 1000000 to convert to SUN.
 
@@ -714,8 +717,8 @@ buyItem(id, price) {
   Utils.contract
     .buyItem(id)
     .send({
-      shouldPollResponse: true, // waits for confirmation that it is on the blockchain
-      callValue: price * 1000000 // Amount of SUN we send in this call
+      shouldPollResponse: true,
+      callValue: price * 1000000 //convert to SUN
     })
     .then(res => {
       Swal.fire({
@@ -726,21 +729,21 @@ buyItem(id, price) {
       });
     })
     .catch(err => {
+      console.log(err);
       Swal.fire({
         title: "Unable to purchase item.",
         type: "error"
       });
     });
 }
-
 ```
 
-10. Lines 162 - 174
+10. Lines 166 - 179
     - Our component's render function which shows what to display in the browser.
-    - Line 163: Extrapolate variables form component state.
-    - Line 168: Button to check the total items in our contract.
-    - Line 169: Button to add items.
-    - Line 171: Where all our items will be displayed.
+    - Line 167: Extrapolate variables form component state.
+    - Line 172: Button to check the total items in our contract.
+    - Line 173: Button to add items.
+    - Line 175: Where all our items will be displayed.
 
 ### Interacting with dApp and Smart-Contract from the Browser
 
@@ -756,6 +759,203 @@ buyItem(id, price) {
 - Is the numeric id the safest way to interact with items?
 - What other are some security risks associated with our contract? how can we solve them?
 - Feel free to raise issues in the GitHub Repo or leave comments in the Medium article if you can think of more ways to improve this!
+
+## Part IV
+
+#### Overview
+
+- In this part of the tutorial, we will explore events.
+- We will build off of our existing contract and add event functionality to the fron-end.
+
+Resources:
+
+- [Solution/ECommerce-with-events.js](https://github.com/UjwalBattar/eCommerce-hello-world/blob/master/Solution/ECommerce-with-events.js).
+- [TRON Developer Hub](https://developers.tron.network/).
+- [TRON API Reference](https://developers.tron.network/reference).
+- [Watch method in reference](https://developers.tron.network/reference#methodwatch).
+
+### Events
+
+- Events are an important part of smart contract development and can be used to track events when a contract is triggered.
+- Similar to the `.call()` and `.send()` methods that we call on Contract methods, `.watch()` can be called on Contract Events.
+  _Purchased_, _Added_, _Total_, and _Availability_.
+- To begin, go ahead and grab all the code from [here](https://github.com/UjwalBattar/eCommerce-hello-world/blob/master/Solution/ECommerce-with-events.js) and replace the code in your **src/components/ECommerce/index.js** file.
+
+#### Walkthrough of the Front-End with Events
+
+Most of the front end is the same so we will only cover the lines that have changed.
+
+1.  Line 28
+
+    - Add this to your constructor function.
+
+```JavaScript
+this.startEventListeners = this.startEventListeners.bind(this);
+```
+
+2. Lines 33
+
+- Add this to your `componentDidMount` function to invoke the `startEventListeners` when the React component mounts.
+
+```JavaScript
+this.startEventListeners();
+```
+
+3. Lines 36 - 76
+
+   - Our `addItem` function no longer relies on the return statement to present data on the front end. Now we simply call the function.
+
+```JavaScript
+addItem() {
+  const { totalItems, dataLength, allItems } = this.state;
+
+  if (totalItems >= dataLength) {
+    Swal({
+      title: "No more items in data to add.",
+      type: "error"
+    });
+    return;
+  }
+
+  let item = eCommerceData[totalItems];
+  item.price = parseFloat(Math.random() * 10).toFixed(0);
+  item.id = totalItems;
+
+  allItems.push(
+    <div className="eCommerce-item" key={item.id}>
+      <img className="item-image" src={item.image} alt={item.name} />
+      <div className="item-name">{item.name}</div>
+      <div className="price-buy-container">
+        <div className="item-price">{item.price} TRX</div>
+        <button
+          className="buy-button"
+          onClick={() => this.buyItem(item.id, item.price)}
+        >
+          Buy
+        </button>
+        <button
+          className="buy-button"
+          onClick={() => this.checkItem(item.id)}
+        >
+          Check
+        </button>
+      </div>
+    </div>
+  );
+
+  Utils.contract.addItem(item.name, item.price).send({
+    shouldPollResponse: true
+  });
+}
+```
+
+4. Lines 78 - 93
+   - Our `checkItemsTotal` function is now requires asynchronous functionality for events.
+   - On Line 83, we call the `watch()` method on the `Utils.contract.Total()` event and store the awaited response in the variable `checkTotal`.
+   - On line 90, we use `checkTotal.stop();` to stop watching the event as we no longer need to keep that connection open.
+
+```JavaScript
+async checkItemsTotal() {
+  Utils.contract.checkItemsTotal().send({
+    callValue: 0
+  });
+
+  let checkTotal = await Utils.contract.Total().watch((err, { result }) => {
+    if (err) return console.log("Failed to bind event listener", err);
+    if (result) {
+      console.log(result);
+      Swal.fire({
+        title: `This contract has ${result.totalItems} items.`,
+        type: "success"
+      });
+      checkTotal.stop();
+    }
+  });
+}
+```
+
+5. Lines 95 - 112
+
+- Similar to our `checkItemsTotal` function, we watch for the event to be emitted on our `checkItem` and then `stop()` watching after we receive the result.
+
+```JavaScript
+async checkItem(id) {
+  Utils.contract.checkItem(id).send({
+    callValue: 0
+  });
+
+  let checkAvailability = await Utils.contract
+    .Availability()
+    .watch((err, { result }) => {
+      if (err) return console.log("Failed to bind event listener", err);
+      if (result) {
+        Swal.fire({
+          title: `Available: ${result.available}.`,
+          type: result.available ? "success" : "error"
+        });
+        checkAvailability.stop();
+      }
+    });
+}
+```
+
+6. Lines 114 - 119
+   - Without needing the return values, our `buyItem` function is much more concise. This is one of the added benefits of using `watch()`.
+
+```JavaScript
+buyItem(id, price) {
+  Utils.contract.buyItem(id).send({
+    shouldPollResponse: true,
+    callValue: price * 1000000 // converted to SUN
+  });
+}
+```
+
+7. Lines 121 - 147
+   - This is the one new function we have added to our code. This `startEventListeners` is responsible for watching the events emitted by our contract.
+   - Umnlike the previous 2 functions, we may not want to call `stop()` after we use it as this will allow us to watch the contract to be notified of changes made by any other user.
+   - In our case this is useful to be alerted when a new item has been added or an item has been purchased and no longer available.
+   - We start 2 event listeners in this function to watch for the `Purchased` and `Added` events emitted by out contract.
+
+```JavaScript
+startEventListeners() {
+  Utils.contract.Purchased().watch((err, { result }) => {
+    if (err) return console.log("Failed to bind event listener", err);
+    if (result) {
+      Swal.fire({
+        title: `${result.name} has been purchased for ${result.price}.`,
+        html:
+          `<p>Seller: ${result.seller}</p>` + `<p>Buyer: ${result.buyer}</p>`,
+        type: "success"
+      });
+    }
+  });
+
+  Utils.contract.Added().watch((err, { result }) => {
+    if (err) return console.log("Failed to bind event listener", err);
+    if (result) {
+      Swal.fire({
+        title: `${result.name} has been added for ${result.price}.`,
+        html:
+          `<p>Seller: ${result.seller}</p>` +
+          `<p>Added: ${result.exists}</p>` +
+          `<p>Available: ${result.available}</p>`,
+        type: "success"
+      });
+    }
+  });
+}
+```
+
+### Interacting with dApp and Smart-Contract from the Browser
+
+- It is recommended to recompile and re-migrate your contract as not doing so may provide unpredictable results. Refer to the beginning of Part II for instructions. (If you are using the same contract as before, refresh you browser and try to check how many items are in the contract.)
+- After migrating your contract, you will need to replace your contract address in the **components/ECommerce/index.js** file.
+- In the terminal, run `npm run start` and you should see the application in the browser.
+- Feel free to click around and watch your application interact with your contract live on the Shasta network!
+- Launching your application on to the internet is nothing different than launching any other React application. You can easily find resources online to help you through this.
+
+- **CONGRATULATIONS! You have successfully built a dApp and launched a smart contract with event listeners on the Shasta network!**
 
 ## Thank you for following this tutorial! Be on the look out for more educational resources from us in the future! See you around the network. TRON to the moon!
 
