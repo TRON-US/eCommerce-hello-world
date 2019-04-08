@@ -1,14 +1,14 @@
 import React, { Component } from "react";
 import Swal from "sweetalert2";
 
-import Utils from "utils";
+import Utils from "../../utils";
 import eCommerceData from "./eCommerce-data";
 import "./ECommerce.scss";
 
-/// Add your contract address here////////////////////////////////å
-const contractAddress = "4175e28fbf92bcd5afae462bb93a217f1ef3b9b2af";
-// base85v = "TLiXUGoitF1qPM6Z2c8g6fygiawoEyLXWL"
-// hex = "4175e28fbf92bcd5afae462bb93a217f1ef3b9b2af"
+/// Add your contract address here////////////////////////////////
+const contractAddress = "Your contract address here";
+// base85v = "TBr511mcvfqosnyKdYFxqbVfTvRCdHUjUs"
+// hex = "411496a93f7a5315b5c6682c34891704fbd067e0c9"
 /////////////////////////////////////////////////////////////////
 
 export default class ECommerce extends Component {
@@ -84,6 +84,7 @@ export default class ECommerce extends Component {
         });
       })
       .catch(err => {
+        console.log(err);
         Swal.fire({
           title: "Unable to add item.",
           type: "error"
@@ -99,7 +100,7 @@ export default class ECommerce extends Component {
     Utils.contract
       .checkItemsTotal()
       .send({
-        shouldPollResponse: true
+        callValue: 0
       })
       .then(res => {
         Swal.fire({
@@ -110,7 +111,7 @@ export default class ECommerce extends Component {
       .catch(err => {
         console.log(err);
         Swal.fire({
-          title: "Unable to check the total items.",
+          title: "Something went wrong in checking the total.",
           type: "error"
         });
       });
@@ -120,7 +121,8 @@ export default class ECommerce extends Component {
     Utils.contract
       .checkItem(id)
       .send({
-        shouldPollResponse: true
+        shouldPollResponse: true,
+        callValue: 0
       })
       .then(res => {
         Swal.fire({
@@ -129,6 +131,7 @@ export default class ECommerce extends Component {
         });
       })
       .catch(err => {
+        console.log(err);
         Swal.fire({
           title: "Unable to check item.",
           type: "error"
@@ -141,7 +144,7 @@ export default class ECommerce extends Component {
       .buyItem(id)
       .send({
         shouldPollResponse: true,
-        callValue: price * 1000000
+        callValue: price * 1000000 //convert to SUn
       })
       .then(res => {
         Swal.fire({
@@ -152,6 +155,7 @@ export default class ECommerce extends Component {
         });
       })
       .catch(err => {
+        console.log(err);
         Swal.fire({
           title: "Unable to purchase item.",
           type: "error"
