@@ -1,19 +1,14 @@
 import React, { Component } from "react";
 import Swal from "sweetalert2";
 
-import Utils from "utils";
+import Utils from "../../utils";
 import eCommerceData from "./eCommerce-data";
 import "./ECommerce.scss";
 
 /// Add your contract address here////////////////////////////////
-// SHASTA
 const contractAddress = "411496a93f7a5315b5c6682c34891704fbd067e0c9";
 // base85v = "TBr511mcvfqosnyKdYFxqbVfTvRCdHUjUs"
 // hex = "411496a93f7a5315b5c6682c34891704fbd067e0c9"
-// MAINNET
-// const contractAddress = "41ab8ee611c011f60854c8c1492a9dbd8335328925";
-// base85v = "TRcKjdyZcLKzj69hNiM2CHWqH9hpr1wmS1"
-// hex = "41ab8ee611c011f60854c8c1492a9dbd8335328925"
 /////////////////////////////////////////////////////////////////
 
 export default class ECommerce extends Component {
@@ -79,7 +74,6 @@ export default class ECommerce extends Component {
         shouldPollResponse: true
       })
       .then(res => {
-        console.log(res);
         Swal.fire({
           title: `${res.name} was added at index ${res.id}`,
           html:
@@ -91,12 +85,15 @@ export default class ECommerce extends Component {
       })
       .catch(err => {
         console.log(err);
+        Swal.fire({
+          title: "Unable to add item.",
+          type: "error"
+        });
       });
 
     this.setState({
       totalItems: totalItems + 1
     });
-    return;
   }
 
   checkItemsTotal() {
@@ -106,7 +103,6 @@ export default class ECommerce extends Component {
         callValue: 0
       })
       .then(res => {
-        console.log(res);
         Swal.fire({
           title: `There are ${res.total} in this contract's store.`,
           type: "success"
@@ -129,7 +125,6 @@ export default class ECommerce extends Component {
         callValue: 0
       })
       .then(res => {
-        console.log(res);
         Swal.fire({
           title: `Available: ${res.available}.`,
           type: res.available ? "success" : "error"
@@ -137,6 +132,10 @@ export default class ECommerce extends Component {
       })
       .catch(err => {
         console.log(err);
+        Swal.fire({
+          title: "Unable to check item.",
+          type: "error"
+        });
       });
   }
 
