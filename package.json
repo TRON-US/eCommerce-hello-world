@@ -14,14 +14,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/UjwalBattar/eCommerce-hello-world.git"
+    "url": "git+https://github.com/TRON-US/eCommerce-hello-world.git"
   },
   "author": "Ujwal Battar",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/UjwalBattar/eCommerce-hello-world/issues"
+    "url": "https://github.com/TRON-US/eCommerce-hello-world/issues"
   },
-  "homepage": "https://github.com/UjwalBattar/eCommerce-hello-world#readme",
+  "homepage": "https://github.com/TRON-US/eCommerce-hello-world#readme",
   "dependencies": {
     "node-sass": "^4.11.0",
     "react": "^16.8.4",

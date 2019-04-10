@@ -59,7 +59,7 @@
 
 ### Set up the Project
 
-1. Download or Clone the skeleton for this guide from [here](https://github.com/UjwalBattar/eCommerce-hello-world).
+1. Download or Clone the skeleton for this guide from [here](https://github.com/TRON-US/eCommerce-hello-world).
 2. From your terminal, `cd` into this newly created directory.
 3. In terminal, run `npm install`.
 4. Open up this project in your favorite IDE/text-editor.
@@ -477,7 +477,7 @@ Now that you have acquainted yourself with the tools, let us get started writing
 - Within this directory, create a file called `ECommerce.sol` and open this blank file.
 - Copy your entire contract from Remix (from Part II) and paste it in this `ECommerce.sol` file.
 - In the `addItem` function, change `price: (_price * 1000000000000000000),` to `price: (_price * 1000000),`. This is because 1 Ether is equal to 1e18 wei (1,000,000,000,000,000,000) where 1 TRX is equal to 1e6 Sun (1,000,000).
-- Refer to the [`ECommerce.sol` file](https://github.com/UjwalBattar/eCommerce-hello-world/blob/master/Solution/ECommerce.sol) in the Solution folder for reference.
+- Refer to the [`ECommerce.sol` file](https://github.com/TRON-US/eCommerce-hello-world/blob/master/Solution/ECommerce.sol) in the Solution folder for reference.
 
 ### Compiling & Migrating
 
@@ -519,7 +519,7 @@ Now that we have the smart contract in our application, we can go ahead and comp
 
    This also at the very bottom of the file.
 
-3. If you need a reference to the code at any time, you can find the solution in [Solution/ECommerce-without-events.js](https://github.com/UjwalBattar/eCommerce-hello-world/blob/master/Solution/ECommerce-without-events.js)
+3. If you need a reference to the code at any time, you can find the solution in [Solution/ECommerce-without-events.js](https://github.com/TRON-US/eCommerce-hello-world/blob/master/Solution/ECommerce-without-events.js)
 
 #### Walkthrough of the Front-End
 
@@ -769,7 +769,7 @@ buyItem(id, price) {
 
 Resources:
 
-- [Solution/ECommerce-with-events.js](https://github.com/UjwalBattar/eCommerce-hello-world/blob/master/Solution/ECommerce-with-events.js).
+- [Solution/ECommerce-with-events.js](https://github.com/TRON-US/eCommerce-hello-world/blob/master/Solution/ECommerce-with-events.js).
 - [TRON Developer Hub](https://developers.tron.network/).
 - [TRON API Reference](https://developers.tron.network/reference).
 - [Watch method in reference](https://developers.tron.network/reference#methodwatch).
@@ -779,7 +779,7 @@ Resources:
 - Events are an important part of smart contract development and can be used to track events when a contract is triggered.
 - Similar to the `.call()` and `.send()` methods that we call on Contract methods, `.watch()` can be called on Contract Events.
   _Purchased_, _Added_, _Total_, and _Availability_.
-- To begin, go ahead and grab all the code from [here](https://github.com/UjwalBattar/eCommerce-hello-world/blob/master/Solution/ECommerce-with-events.js) and replace the code in your **src/components/ECommerce/index.js** file.
+- To begin, go ahead and grab all the code from [here](https://github.com/TRON-US/eCommerce-hello-world/blob/master/Solution/ECommerce-with-events.js) and replace the code in your **src/components/ECommerce/index.js** file.
 
 #### Walkthrough of the Front-End with Events
 
