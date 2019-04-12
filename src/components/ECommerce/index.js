@@ -5,10 +5,10 @@ import Utils from "../../utils";
 import eCommerceData from "./eCommerce-data";
 import "./ECommerce.scss";
 
-/// Add your contract address here////////////////////////////////
-const contractAddress = "Your contract address here";
-// base85v = "TBr511mcvfqosnyKdYFxqbVfTvRCdHUjUs"
-// hex = "411496a93f7a5315b5c6682c34891704fbd067e0c9"
+/// Add your contract address here////////////////////////////////å
+const contractAddress = "41e269ba95d005bb42eef3bb8573c617a4c8cb638c";
+// base85v = "TLiXUGoitF1qPM6Z2c8g6fygiawoEyLXWL"
+// hex = "4175e28fbf92bcd5afae462bb93a217f1ef3b9b2af"
 /////////////////////////////////////////////////////////////////
 
 export default class ECommerce extends Component {
@@ -25,10 +25,12 @@ export default class ECommerce extends Component {
     this.buyItem = this.buyItem.bind(this);
     this.checkItem = this.checkItem.bind(this);
     this.checkItemsTotal = this.checkItemsTotal.bind(this);
+    this.startEventListeners = this.startEventListeners.bind(this);
   }
 
   async componentDidMount() {
     await Utils.setContract(window.tronWeb, contractAddress);
+    this.startEventListeners();
   }
 
   addItem() {
@@ -68,99 +70,84 @@ export default class ECommerce extends Component {
       </div>
     );
 
-    Utils.contract
-      .addItem(item.name, item.price)
-      .send({
-        shouldPollResponse: true
-      })
-      .then(res => {
-        Swal.fire({
-          title: `${res.name} was added at index ${res.id}`,
-          html:
-            `<p>Price: ${res.price / 1000000} TRX (${res.price} SUN)</p>` +
-            `<p>Seller: ${res.seller}</p>` +
-            `<p>Available: ${res.available}</p>`,
-          type: "success"
-        });
-      })
-      .catch(err => {
-        console.log(err);
-        Swal.fire({
-          title: "Unable to add item.",
-          type: "error"
-        });
-      });
-
     this.setState({
       totalItems: totalItems + 1
     });
+
+    Utils.contract.addItem(item.name, item.price).send({
+      shouldPollResponse: true
+    });
   }
 
-  checkItemsTotal() {
-    Utils.contract
-      .checkItemsTotal()
-      .send({
-        callValue: 0
-      })
-      .then(res => {
+  async checkItemsTotal() {
+    Utils.contract.checkItemsTotal().send({
+      callValue: 0
+    });
+
+    let checkTotal = await Utils.contract.Total().watch((err, { result }) => {
+      if (err) return console.log("Failed to bind event listener", err);
+      if (result) {
         Swal.fire({
-          title: `There are ${res.total} in this contract's store.`,
+          title: `This contract has ${result.totalItems} items.`,
           type: "success"
         });
-      })
-      .catch(err => {
-        console.log(err);
-        Swal.fire({
-          title: "Something went wrong in checking the total.",
-          type: "error"
-        });
-      });
+        checkTotal.stop();
+      }
+    });
   }
 
-  checkItem(id) {
-    Utils.contract
-      .checkItem(id)
-      .send({
-        shouldPollResponse: true,
-        callValue: 0
-      })
-      .then(res => {
-        Swal.fire({
-          title: `Available: ${res.available}.`,
-          type: res.available ? "success" : "error"
-        });
-      })
-      .catch(err => {
-        console.log(err);
-        Swal.fire({
-          title: "Unable to check item.",
-          type: "error"
-        });
+  async checkItem(id) {
+    Utils.contract.checkItem(id).send({
+      callValue: 0
+    });
+
+    let checkAvailability = await Utils.contract
+      .Availability()
+      .watch((err, { result }) => {
+        if (err) return console.log("Failed to bind event listener", err);
+        if (result) {
+          Swal.fire({
+            title: `Available: ${result.available}.`,
+            type: result.available ? "success" : "error"
+          });
+          checkAvailability.stop();
+        }
       });
   }
 
   buyItem(id, price) {
-    Utils.contract
-      .buyItem(id)
-      .send({
-        shouldPollResponse: true,
-        callValue: price * 1000000 //convert to SUn
-      })
-      .then(res => {
+    Utils.contract.buyItem(id).send({
+      shouldPollResponse: true,
+      callValue: price * 1000000 // converted to SUN
+    });
+  }
+
+  startEventListeners() {
+    Utils.contract.Purchased().watch((err, { result }) => {
+      if (err) return console.log("Failed to bind event listener", err);
+      if (result) {
         Swal.fire({
-          title: `You have purchased ${res.name} for ${res.price /
-            1000000} TRX (${res.price} SUN).`,
-          html: `<p>Seller: ${res.seller}</p>` + `<p>Buyer: ${res.buyer}</p>`,
+          title: `${result.name} has been purchased for ${result.price}.`,
+          html:
+            `<p>Seller: ${result.seller}</p>` + `<p>Buyer: ${result.buyer}</p>`,
           type: "success"
         });
-      })
-      .catch(err => {
-        console.log(err);
+      }
+    });
+
+    Utils.contract.Added().watch((err, { result }) => {
+      if (err) return console.log("Failed to bind event listener", err);
+      if (result) {
         Swal.fire({
-          title: "Unable to purchase item.",
-          type: "error"
+          title: `${result.name} has been added for ${result.price}.`,
+          html:
+            `<p>Seller: ${result.seller}</p>` +
+            `<p>Added: ${result.exists}</p>` +
+            `<p>Available: ${result.available}</p>`,
+          type: "success"
         });
-      });
+      }
+    });
   }
 
   render() {
@@ -177,12 +164,3 @@ export default class ECommerce extends Component {
     );
   }
 }
-// <button onClick={this.testClick}>T E S T</button>
-// <p>This will be the ECommerce Component </p>
-//
-// <div className="eCommerce-component-dash">
-//   <div>Total Items In Store: {totalItems}</div>
-//   <button onClick={this.checkItemsTotal}>Total Contract Items</button>
-//   <button onClick={this.addItem}>Add Item</button>
-// </div>
-// <div className="eCommerce-item-container">{allItems}</div>
