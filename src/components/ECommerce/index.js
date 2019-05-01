@@ -6,7 +6,7 @@ import eCommerceData from "./eCommerce-data";
 import "./ECommerce.scss";
 
 /// Add your contract address here////////////////////////////////å
-// base85v = "TLiXUGoitF1qPM6Z2c8g6fygiawoEyLXWL"
+// base58 = "TLiXUGoitF1qPM6Z2c8g6fygiawoEyLXWL"
 // hex = "4175e28fbf92bcd5afae462bb93a217f1ef3b9b2af"
 const contractAddress = "Your contract address here";
 ///////////////////////////////////////////////////////////////
