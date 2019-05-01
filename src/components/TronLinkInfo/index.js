@@ -13,12 +13,11 @@ export default class TronLinkInfo extends Component {
     };
   }
 
-  // Uncomment each function below then uncomment each call,
-  // one at a time to see your account information filled out
+  // Uncomment each call one at a time to see your account information filled out
   componentDidMount() {
-    this.fetchAccountAddress();
-    this.fetchAccountBalance();
-    this.fetchAccountBandwidth();
+//    this.fetchAccountAddress();
+//    this.fetchAccountBalance();
+//    this.fetchAccountBandwidth();
   }
 
   // // The function below will return an object with address, balance, create_time,
