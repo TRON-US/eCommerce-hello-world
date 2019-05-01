@@ -94,8 +94,7 @@ PK = "enter or paste your private key here";
 
 4. In your text-editor, navigate to the ./src/components/TronLinkInfo/index.js file.
 5. Fetch Account Address:
-   - Begin by uncommenting the `fetchAccountAddress` function (ln 26 - ln 36).
-   - Now uncomment the function call on line 19 in the `componentDidMount` function.
+   - Begin by uncommenting the function call on line 19 in the `componentDidMount` function.
    - If you go back to the browser, you should now see your account address displaying in Hex format.
    - If you would like to see this displayed in Base58 format, uncomment lines 29 to 32 and change the `setState` function on line 33 to look like:
 
@@ -109,8 +108,7 @@ this.setState({
 - You can click on the TronLink extension and verify that the address being displayed in ASCii format is indeed your account address.
 
 4. Fetch Account Balance:
-   - Similar to the previous function, uncomment the `fetchAccountBalance` function (ln 39 - ln 47).
-   - Now uncomment the function call on line 20 in the `componentDidMount` function.
+   - Uncomment the function call on line 20 in the `componentDidMount` function.
    - In the browser you should now see the balance of your account in SUN.
    - To view your account balance in TRX, uncomment line 41 and change the `setState` function on line 44 to look like:
 
@@ -121,8 +119,7 @@ this.setState({
 ```
 
 5. Fetch Account Bandwidth:
-   - Uncomment the `fetchAccountBandwidth` function (ln 50 - ln 55).
-   - Now uncomment the function call on line 21 in the `componentDidMount` function.
+   - Uncomment the function call on line 21 in the `componentDidMount` function.
    - In the browser, you should now see the bandwidth balance of your account.
 6. Your app should now look something like this:
    ![Application Setup](./public/reference-images/eCommerce-setup.png)
