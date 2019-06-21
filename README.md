@@ -490,8 +490,8 @@ Now that we have the smart contract in our application, we can go ahead and comp
 
 ![contract-compilation](./public/reference-images/contract-compilation.png)
 
-3. Now run `tronbox migrate --reset --network shasta` - This tells tronbox to use Shasta network, reset the network, and migrate the contracts onto the network.
-   - If this is the first time migrating, you do not need to use the `--reset` flag.
+3. Now run `tronbox migrate --network shasta` - This tells tronbox to use Shasta network, reset the network, and migrate the contracts onto the network.
+   - If this is **NOT** the **first time migrating**, may need to use the `--reset` flag. Ex: `tronbox migrate --reset --network shasta`
    - Your output should look similar to this:
 
 ![contract-migration](./public/reference-images/contract-migration-shasta.png)
