@@ -70,6 +70,10 @@ export default class ECommerce extends Component {
       </div>
     );
 
+    this.setState({
+      totalItems: totalItems + 1
+    });
+
     Utils.contract.addItem(item.name, item.price).send({
       shouldPollResponse: true
     });
