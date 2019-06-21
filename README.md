@@ -956,4 +956,4 @@ startEventListeners() {
 
 ## Thank you for following this tutorial! Be on the look out for more educational resources from us in the future! See you around the network. TRON to the moon!
 
-Be sure to follow TRON on our social media platforms and join our discord and telegram channels to join and engage with our ever growing and passionate community.
+Be sure to follow TRON on our social media platforms and join our [discord](https://discord.gg/hrjr7P): https://discord.gg/hrjr7P channel to join and engage with our helpful, ever growing, and passionate community.
