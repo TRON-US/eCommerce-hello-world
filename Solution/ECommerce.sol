@@ -39,7 +39,6 @@ contract ECommerce {
 
         address sellerAddress = msg.sender;
 
-
         items[itemId] = Item({
             id: itemId,
             name: _name,
@@ -66,7 +65,7 @@ contract ECommerce {
         require(items[_id].available == true, "This item is no longer available.");
         require(items[_id].seller != address(0), "This item has no seller");
         require(items[_id].buyer == address(0), "This item is no longer available");
-        require(items[_id].price == msg.value, "Not enough TRX to buy this item.");
+        require(items[_id].price >= msg.value, "Not enough TRX to buy this item.");
 
         address _buyerAddress = msg.sender;
 
