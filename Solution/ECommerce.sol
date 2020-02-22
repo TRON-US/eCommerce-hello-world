@@ -80,7 +80,7 @@ contract ECommerce {
     function _handlePurchase(uint _id, address _buyerAddress, uint _value) internal {
         items[_id].available = false;
         items[_id].buyer = _buyerAddress;
-        items[_id].seller.call.value(_value);
+        address(items[_id].seller).call.value(_value);
     }
 
 }
