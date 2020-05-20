@@ -65,7 +65,7 @@ contract ECommerce {
         require(items[_id].available == true, "This item is no longer available.");
         require(items[_id].seller != address(0), "This item has no seller");
         require(items[_id].buyer == address(0), "This item is no longer available");
-        require(items[_id].price >= msg.value, "Not enough TRX to buy this item.");
+        require(items[_id].price <= msg.value, "Not enough TRX to buy this item.");
 
         address _buyerAddress = msg.sender;
 
@@ -79,7 +79,7 @@ contract ECommerce {
     function _handlePurchase(uint _id, address _buyerAddress, uint _value) internal {
         items[_id].available = false;
         items[_id].buyer = _buyerAddress;
-        address(items[_id].seller).call.value(_value);
+        items[_id].seller.call.value(_value);
     }
 
 }
