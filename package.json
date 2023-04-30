@@ -26,7 +26,7 @@
     "node-sass": "^4.11.0",
     "react": "^16.8.4",
     "react-dom": "^16.8.4",
-    "react-scripts": "^2.1.8",
+    "react-scripts": "^5.0.1",
     "sweetalert2": "^8.5.0",
     "tronweb": "^2.3.4"
   },
